@@ -5,9 +5,7 @@
             <h1>Inscription</h1>
         </div>
 
-        <InfoMessage    v-if="info_message        != '' " :message="info_message" />
-        <SuccessMessage v-if="GET_SUCCESS_MESSAGE != '' " :message="GET_SUCCESS_MESSAGE" />
-        <ErrorMessage   v-if="GET_ERROR_MESSAGE   != '' " :message="GET_ERROR_MESSAGE" />
+        <InfoMessage v-if="info_message != ''" :message="info_message" />
 
 
 
@@ -43,18 +41,12 @@
 
 <script>
 
-import InfoMessage    from '@/components/Message/InfoMessage.vue'
-import SuccessMessage from '@/components/Message/SuccessMessage.vue'
-import ErrorMessage   from '@/components/Message/ErrorMessage.vue'
-
-import {mapGetters,mapActions} from "vuex";
+import InfoMessage from '@/components/Message/InfoMessage.vue'
 
 export default {
     name: "Register",
     components : {
-        InfoMessage,
-        SuccessMessage,
-        ErrorMessage
+        InfoMessage
     },
     data() {
         return{
@@ -68,27 +60,12 @@ export default {
         }
     },
     methods : {
-
-        ...mapActions('accounts',['API_REQUEST_SIGNUP']),
-        ...mapActions('accounts',['RESET_MESSAGE']),
-
-
         SIGNUP()
         {
 
             if(this.email && this.pseudo && this.password && this.password_confirmation) {
 
                 this.info_message = ''
-                this.RESET_MESSAGE()
-
-                let re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; //Nous utilisons une expréssion régulière pour vérifier la confiormité de l'adresse email
-
-                if(!re.test(this.email))
-                {
-                    this.info_message = 'Email non valide'
-                    return
-                }
-
 
                 if(this.pseudo.length < 3)
                 {
@@ -120,22 +97,14 @@ export default {
                     return
                 }
 
-                this.API_REQUEST_SIGNUP({
-                    name     : this.pseudo,
-                    email    : this.email,
-                    password : this.password
-                })
+                console.log("Coucou")
 
             }else{
                 this.info_message = 'Veuillez remplir tous les champ'
             }
+
+
         }
-
-    },
-    computed : {
-        ...mapGetters('accounts',['GET_SUCCESS_MESSAGE']),
-        ...mapGetters('accounts',['GET_ERROR_MESSAGE'])
-
     }
 }
 </script>
