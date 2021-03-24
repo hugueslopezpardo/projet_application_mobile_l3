@@ -1,10 +1,29 @@
 <template>
-    <h1>Welcome</h1>
+
+    <div class="mt-5">
+
+        <Login />
+
+        <Register />
+
+    </div>
+
 </template>
 
 <script>
+
+import Login        from '@/components/Welcome/Login/Login.vue'
+import Register     from '@/components/Welcome/Register/Register.vue'
+
 export default {
-    name: "Welcome"
+    name: "Welcome",
+    components : {
+        Login,
+        Register,
+
+    },
+    computed : {
+    }
 }
 </script>
 
