@@ -28,7 +28,7 @@ export function API_REQUEST_SIGNUP({commit}, {name, email, password})
 
             setTimeout(() => {
                 router.push('/home')
-            }, 3000)
+            }, 1000)
 
         }).catch((error) => {
 
@@ -60,9 +60,35 @@ export function API_REQUEST_SIGNUP({commit}, {name, email, password})
  * Permet de se connecter
  * @axios : POST
  */
-export function API_REQUEST_LOGIN()
+export function API_REQUEST_LOGIN({commit},{email, password})
 {
 
+    commit('SET_IS_DATA_LOADING_TRUE')  //On lance le chargement
+
+    axios
+        .post('http://138.68.74.39/api/login', {
+
+            email    : email,
+            password : password
+
+        })
+        .then(response => (
+
+            commit('SET_LOGIN_INFORMATION', response['data'].token),
+            commit('SET_SUCCESS_MESSAGE', 'Connexion bien réussi, redirection en cours !'),
+
+            setTimeout(() => {
+                router.push('/home')
+            }, 1000)
+
+        ))
+        .catch(error => (
+
+            commit('SET_ERROR_MESSAGE', 'Connexion échoué !'),
+            console.log(error)
+
+        ))
+        .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête le chargement
 }
 
 /**

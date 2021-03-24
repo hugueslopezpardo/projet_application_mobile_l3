@@ -89,7 +89,6 @@ export default {
                     return
                 }
 
-
                 if(this.pseudo.length < 3)
                 {
                     this.info_message = 'Pseudo trop court'
@@ -129,13 +128,13 @@ export default {
             }else{
                 this.info_message = 'Veuillez remplir tous les champ'
             }
+
         }
 
     },
     computed : {
         ...mapGetters('accounts',['GET_SUCCESS_MESSAGE']),
         ...mapGetters('accounts',['GET_ERROR_MESSAGE'])
-
     }
 }
 </script>

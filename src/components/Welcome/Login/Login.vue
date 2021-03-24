@@ -6,7 +6,9 @@
             <h1>Connexion</h1>
         </div>
 
-        <InfoMessage v-if="info_message != ''" :message="info_message" />
+        <InfoMessage    v-if="info_message        != ''"  :message="info_message" />
+        <SuccessMessage v-if="GET_SUCCESS_MESSAGE != '' " :message="GET_SUCCESS_MESSAGE" />
+        <ErrorMessage   v-if="GET_ERROR_MESSAGE   != '' " :message="GET_ERROR_MESSAGE" />
 
         <div class="mb-3">
             <label for="login-email-input" class="form-label">Email</label>
@@ -26,11 +28,16 @@
 
 <script>
 import InfoMessage from '@/components/Message/InfoMessage.vue'
+import SuccessMessage from '@/components/Message/SuccessMessage.vue'
+import ErrorMessage   from '@/components/Message/ErrorMessage.vue'
+import {mapGetters, mapActions} from "vuex";
 
 export default {
     name: "Login",
     components : {
-        InfoMessage
+        InfoMessage,
+        SuccessMessage,
+        ErrorMessage
     },
     data() {
         return {
@@ -41,15 +48,27 @@ export default {
     },
     methods : {
 
+        ...mapActions('accounts',['API_REQUEST_LOGIN']),
+
         LOGIN()
         {
             if(this.email && this.password) {
                 this.info_message = ''
+
+                this.API_REQUEST_LOGIN({
+                    email    : this.email,
+                    password :this.password
+                })
+
             }else{
                 this.info_message = 'Veuillez remplir tous les champs'
             }
         }
 
+    },
+    computed : {
+        ...mapGetters('accounts',['GET_SUCCESS_MESSAGE']),
+        ...mapGetters('accounts',['GET_ERROR_MESSAGE'])
     }
 }
 </script>

@@ -1,6 +1,7 @@
 export function SET_LOGIN_INFORMATION(state, authentification_token)
 {
-    state.authentification_token = authentification_token //On stocke le token d'authentification dans le store
+    state.authentification_token        = authentification_token //On stock le token d'authentification dans le store
+    localStorage.authentification_token = authentification_token //On stock le token dans le local storage par la même occassion
 }
 
 
