@@ -36,8 +36,6 @@
 
             <button v-on:click="SIGNUP" type="submit" class="btn btn-outline-primary mt-3">Inscription</button>
 
-
-
     </div>
 </template>
 
@@ -58,7 +56,6 @@ export default {
             pseudo                : null,
             password              : null,
             password_confirmation : null,
-
 
         }
     },
@@ -100,7 +97,6 @@ export default {
                     this.info_message = 'Erreur les mots de passe ne correspond pas'
                     return
                 }
-
 
                 console.log("Coucou")
 
