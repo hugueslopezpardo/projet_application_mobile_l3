@@ -26,6 +26,4 @@ export function SET_ERROR_MESSAGE(state, error_message)
 export function SET_CURRENT_LIST(state, list_position_id)
 {
     state.current_list = state.todos_lists[list_position_id]
-
-    console.log(state.current_list)
 }
