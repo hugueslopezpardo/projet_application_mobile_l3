@@ -67,6 +67,7 @@ export default {
 
                 this.info_message = ''
 
+
                 if(this.pseudo.length < 3)
                 {
                     this.info_message = 'Pseudo trop court'
