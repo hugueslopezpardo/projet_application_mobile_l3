@@ -1,5 +1,4 @@
-const axios = require('axios')
-
+const axios = require('axios');
 
 /**================================================================================================
  *                                       API - CREATE
@@ -81,12 +80,27 @@ export function API_REQUEST_GET_TODO()
  * Permet de récupérer les lists de TODO de l'utilisateur
  * @axios : GET
  */
-export function API_REQUEST_GET_TODO_LISTS()
+export function API_REQUEST_GET_TODO_LISTS({commit}, authentification_token)
 {
+    axios.create({
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+ authentification_token
+        }
+    })
+        .get('http://138.68.74.39/api/todolists')
+        .then(reponse => {
 
+            commit('SET_TODOS_LISTS', reponse['data'])
+
+        })
+        .catch(error => (
+
+            console.log(error)
+
+        ))
+        .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête le chargement
 }
-
-
 
 
 /**================================================================================================
@@ -102,6 +116,12 @@ export function API_REQUEST_GET_TODO_LISTS()
 /**================================================================================================
  *                                         LOCAL - ACTIONS
  *================================================================================================**/
+
+
+export function REQUEST_SET_CURRENT_LIST({commit}, list_position_id)
+{
+    commit('SET_CURRENT_LIST',list_position_id)
+}
 
 
 /**================================================================================================
