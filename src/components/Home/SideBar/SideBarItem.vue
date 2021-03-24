@@ -11,7 +11,7 @@ export default {
     name: "SideBarItem",
     props : {
         list_position_id   : Number,
-        list_name : String
+        list_name          : String
     },
     methods : {
         ...mapActions('todos',['REQUEST_SET_CURRENT_LIST']),

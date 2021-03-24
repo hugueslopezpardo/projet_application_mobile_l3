@@ -257,6 +257,8 @@ export function REQUEST_SET_CURRENT_LIST({commit}, list_position_id)
     commit('SET_CURRENT_LIST',list_position_id)
 }
 
+export function REQUEST_SET_CURRENT_LIST({commit}, list_positio_id)
+
 
 /**================================================================================================
  *                                         LOCAL - GET
