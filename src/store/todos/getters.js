@@ -33,6 +33,12 @@ export function GET_CURRENT_FILTRED_LIST(state)
 
 }
 
+/**
+ * Permet de récupérer le filtre en cours sur les todos
+ * @param state
+ * @returns {*}
+ * @constructor
+ */
 export function GET_FILTER(state)
 {
     return state.filter

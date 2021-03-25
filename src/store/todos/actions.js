@@ -5,26 +5,43 @@ const axios = require('axios');
  * @param commit
  * @param authentification_token
  */
-export function API_REQUEST_GET_TODOS_LISTS({commit})
+export function API_REQUEST_GET_TODOS_LISTS({commit,dispatch})
 
 {
+
+    commit('SET_IS_DATA_LOADING_TRUE')
+
+    /**
+     * On met le token en paramètre pour autoriser l'action
+     */
+
     axios.create({
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer '+ localStorage.authentification_token
         }
     })
-        .get('http://138.68.74.39/api/todolists')
-        .then(response => {
+        .get('http://138.68.74.39/api/todolists') //On recupère la liste contient les différentes liste de TODO
+        .then(response => {                           //Si le serveir renvoie une réponse positif
 
-            commit('SET_DEFAULT_LIST', response['data'])
+            commit('SET_DEFAULT_LIST', response['data']), //On modifie le state pour y placer la liste que nous avons récupérer en réponse
+
+            /**
+             * On stocke notre todolists dans le localstorage
+             */
+
+            localStorage.default_list = response['data']
 
         })
-        .catch(error => (
+        .catch(error => { //Si il y'a une erreur
 
-            console.log(error)
+            if(error.response)
+            {
+                commit('SET_DEFAULT_LIST', [])
+                dispatch('REQUEST_SET_ERROR_MESSAGE','Erreur lors de la récupération de la liste')
+            }
 
-        ))
+        })
         .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête le chargement
 }
 
@@ -36,8 +53,10 @@ export function API_REQUEST_GET_TODOS_LISTS({commit})
  * @param todolist_id
  * @constructor
  */
-export function API_REQUEST_CREATE_TODO({commit},{name , todolist_id})
+export function API_REQUEST_CREATE_TODO({commit, dispatch},{name , todolist_id})
 {
+
+    commit('SET_IS_DATA_LOADING_TRUE')
 
     axios.create({
         headers: {
@@ -63,11 +82,14 @@ export function API_REQUEST_CREATE_TODO({commit},{name , todolist_id})
             })
 
         })
-        .catch(error => (
+        .catch(error => {
 
-            console.log(error)
+            if(error.response)
+            {
+                dispatch('REQUEST_SET_ERROR_MESSAGE',"Erreur lors de l'ajout dans la liste")
+            }
 
-        ))
+        })
         .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête le chargement
 
 
@@ -80,8 +102,10 @@ export function API_REQUEST_CREATE_TODO({commit},{name , todolist_id})
  * @param todo_id
  * @constructor
  */
-export function API_REQUEST_DELETE_TODO({commit}, todo_id)
+export function API_REQUEST_DELETE_TODO({commit, dispatch}, todo_id)
 {
+
+    commit('SET_IS_DATA_LOADING_TRUE')
 
     axios.create({
         headers: {
@@ -94,13 +118,16 @@ export function API_REQUEST_DELETE_TODO({commit}, todo_id)
         .then(response => {
 
             commit('REMOVE_TODO_IN_LIST',response['data'].id)
+            dispatch('REQUEST_SET_SUCCESS_MESSAGE','Supréssion de la todo réussie')
+        })
+        .catch(error => {
+
+            if(error.response)
+            {
+                dispatch('REQUEST_SET_ERROR_MESSAGE',"Erreur lors de la supréssion de la liste")
+            }
 
         })
-        .catch(error => (
-
-            console.log(error)
-
-        ))
         .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête le chargement
 }
 
@@ -114,8 +141,10 @@ export function API_REQUEST_DELETE_TODO({commit}, todo_id)
  * @param todo_id
  * @constructor
  */
-export function API_REQUEST_CHANGE_TODO_STATUS({commit},{name, completed, todolist_id, todo_id})
+export function API_REQUEST_CHANGE_TODO_STATUS({commit, dispatch},{name, completed, todolist_id, todo_id})
 {
+
+    commit('SET_IS_DATA_LOADING_TRUE')
 
     axios.create({
         headers: {
@@ -131,14 +160,16 @@ export function API_REQUEST_CHANGE_TODO_STATUS({commit},{name, completed, todoli
         .then(response => {
 
             commit('UPDATE_TODO_STATUS_IN_LIST',response['data'].id)
-            console.log(response)
 
         })
-        .catch(error => (
+        .catch(error => {
 
-            console.log(error)
+            if(error.response)
+            {
+                dispatch('REQUEST_SET_ERROR_MESSAGE',"Erreur lors du changement de status de la todo")
+            }
 
-        ))
+        })
         .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête le chargement
 
 }
@@ -152,10 +183,10 @@ export function API_REQUEST_CHANGE_TODO_STATUS({commit},{name, completed, todoli
  * @param todolist_id
  * @param todo_id
  */
-export function API_REQUEST_UPDATE_TODO({commit},{name, todo_id})
+export function API_REQUEST_UPDATE_TODO({commit, dispatch},{name, todo_id})
 {
 
-    console.log(name, todo_id)
+    commit('SET_IS_DATA_LOADING_TRUE')
 
     axios.create({
         headers: {
@@ -168,6 +199,7 @@ export function API_REQUEST_UPDATE_TODO({commit},{name, todo_id})
         })
         .then(response => {
 
+            dispatch('REQUEST_SET_SUCCESS_MESSAGE','Changement effectué ')
 
             commit('UPDATE_TODO_NAME_IN_LIST',{
                 todo_id  : response['data'].id,
@@ -175,11 +207,14 @@ export function API_REQUEST_UPDATE_TODO({commit},{name, todo_id})
             })
 
         })
-        .catch(error => (
+        .catch(error => {
 
-            console.log(error)
+            if(error.response)
+            {
+                dispatch('REQUEST_SET_ERROR_MESSAGE',"Erreur lors de la mise à jour de la TODO")
+            }
 
-        ))
+        })
         .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête le chargement
 }
 
@@ -191,8 +226,11 @@ export function API_REQUEST_UPDATE_TODO({commit},{name, todo_id})
  * @param authentification_token
  * @constructor
  */
-export function API_REQUEST_DELETE_TODO_LIST({commit}, todo_list_id)
+export function API_REQUEST_DELETE_TODO_LIST({commit, dispatch}, todo_list_id)
 {
+
+    commit('SET_IS_DATA_LOADING_TRUE')
+
 
     axios.create({
         headers: {
@@ -204,8 +242,8 @@ export function API_REQUEST_DELETE_TODO_LIST({commit}, todo_list_id)
 
         .then((response) => {
 
+            dispatch('REQUEST_SET_SUCCESS_MESSAGE','Liste parfaitement supprimer'),
 
-            commit('SET_SUCCESS_MESSAGE','Liste parfaitement supprimer'),
             commit('DELETE_TODO_LIST',todo_list_id)
             console.log(response)
 
@@ -213,10 +251,11 @@ export function API_REQUEST_DELETE_TODO_LIST({commit}, todo_list_id)
         .catch((error) => {
 
 
-            commit('SET_ERROR_MESSAGE','Erreur lors de la supréssion de la liste'),
+            dispatch('REQUEST_SET_ERROR_MESSAGE','Erreur lors de la supréssion de la liste'),
             console.log(error)
 
         })
+        .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête le chargement
 
 
 
@@ -227,8 +266,9 @@ export function API_REQUEST_DELETE_TODO_LIST({commit}, todo_list_id)
  * Permet de créer une liste de TODO
  * @axios : POST
  */
-export function API_REQUEST_CREATE_TODO_LIST({commit}, name)
+export function API_REQUEST_CREATE_TODO_LIST({commit, dispatch}, name)
 {
+    commit('SET_IS_DATA_LOADING_TRUE')
 
     axios.create({
         headers: {
@@ -242,7 +282,7 @@ export function API_REQUEST_CREATE_TODO_LIST({commit}, name)
 
         .then((response) => {
 
-            commit('SET_SUCCESS_MESSAGE','Liste parfaitement créer'),
+            dispatch('REQUEST_SET_SUCCESS_MESSAGE','Liste parfaitement créer'),
             commit('CREATE_TODO_LIST', {
 
 
@@ -252,20 +292,19 @@ export function API_REQUEST_CREATE_TODO_LIST({commit}, name)
                 created_at  : response['data'].created_at,
                 updated_at  : response['data'].updated_at,
                 nb_todos    : response['data'].nb_todos,
-                todos       : response['data'].todos,
+                todos       : []
 
             })
 
 
-            console.log(response)
-
         })
         .catch((error) => (
 
-            commit('SET_ERROR_MESSAGE','Erreur lors de la création de la liste'),
-                console.log(error)
+            dispatch('REQUEST_SET_ERROR_MESSAGE','Erreur lors de la création de la liste'),
+            console.log(error)
 
         ))
+        .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête le chargement
 
 }
 
@@ -332,6 +371,7 @@ export function REQUEST_SET_SUCCESS_MESSAGE({commit},success)
 }
 
 /**
+
  * Permet de modifier le message d'erreur
  * @param commit
  * @param error_message
@@ -339,5 +379,13 @@ export function REQUEST_SET_SUCCESS_MESSAGE({commit},success)
 export function REQUEST_SET_ERROR_MESSAGE({commit},error_message)
 {
     commit('SET_ERROR_MESSAGE',error_message)
+}
+
+
+export function REQUEST_SET_DEFAULT_MESSAGE({dispatch})
+{
+    dispatch('REQUEST_SET_SUCCESS_MESSAGE','')
+    dispatch('REQUEST_SET_INFO_MESSAGE','')
+    dispatch('REQUEST_SET_ERROR_MESSAGE','')
 }
 

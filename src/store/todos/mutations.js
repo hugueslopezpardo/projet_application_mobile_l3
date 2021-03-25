@@ -176,6 +176,7 @@ export function DELETE_TODO_LIST(state, todo_list_id)
     state.default_list.splice(i, 1)           //On supprimer notre liste
     SET_CURRENT_LIST(state, null)             //On remet la liste sur la quel on travaille à NULL
 }
+
 /**
  * Permet de créer une liste de TODO
  * @param state
@@ -189,6 +190,9 @@ export function DELETE_TODO_LIST(state, todo_list_id)
  */
 export function CREATE_TODO_LIST(state, {id, name, user_id, created_at, updated_at, nb_todos, todos})
 {
+
+    console.log(todos)
+
     /**
      * On créer notre liste
      */
@@ -255,13 +259,4 @@ function get_index(liste,todo_id)
     return liste.map(item => item.id).indexOf(todo_id)
 }
 
-
-/**
- * Permet de récupérer la position de la todo dans une liste
- * @param todo_id
- */
-function get_index(liste,todo_id)
-{
-    return liste.map(item => item.id).indexOf(todo_id)
-}
 

@@ -9,7 +9,31 @@
         <!-- Quand on clique sur le boutton on effectue une requête à axios pour supprimer la liste, on passe en paramètre l'id de la liste a supprimer -->
 
         <div class="mt-4 mb-4">
-            <button v-on:click="API_REQUEST_DELETE_TODO_LIST(current_list.id)" type="submit" class="btn btn-outline-danger">Supprimer la liste</button>
+            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                Supprimer la liste
+            </button>
+
+            <!-- Quand on appuie sur le boutton on ouvre une fenêtre modal pour avoir une confirmation de la supréssion -->
+
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Supréssion de la liste</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Voulez-vous vraiment supprimer la liste ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal" v-on:click="API_REQUEST_DELETE_TODO_LIST(current_list.id)" >Supprimer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
 
 
@@ -32,6 +56,7 @@
         </div>
 
 
+
         <!--
             Le formulaire pour créer une todo :
 
@@ -42,7 +67,7 @@
         <div class="mb-3 mt-3">
             <label for="create-new-list-input" class="form-label">Créer une TODO</label>
             <input v-model="todo_name" type="text" class="form-control" id="create-new-list-input" placeholder="Nom de votre tâche ..." @keyup.enter="CREATE_TODO()">
-            <div id="emailHelp" class="form-text">3 caractère minimum / 20 caractère maximum</div>
+            <div id="emailHelp" class="form-text">3 caractère minimum / 30 caractère maximum</div>
         </div>
 
         <!-- Quand nous cliquons sur le boutton nous apellons la méthodes pour créer une TODO -->
@@ -70,9 +95,11 @@
             et nous allons lui donner comme paramètre la TODO et ça position dans la liste
 
         --->
-      <ul class="list-group">
+        {{GET}}
+      <ul class="list-group" v-if="GET_CURRENT_FILTRED_LIST.length != 0">
             <TodosListsItem v-for="(todo, key) in GET_CURRENT_FILTRED_LIST" v-bind:key="key" :todo="todo" :todo_position_in_list="key"/>
-        </ul>
+      </ul>
+        <p v-else>Aucune todo ne correspond à ce filtre</p>
 
     </div>
 
@@ -100,7 +127,8 @@ export default {
     },
     methods : { //importation des actions du STATE todos
         ...mapActions('todos',['API_REQUEST_CREATE_TODO','REQUEST_SET_ALL_TODOS','REQUEST_SET_FINISH_TODOS','REQUEST_SET_NOT_FINISH_TODOS','API_REQUEST_DELETE_TODO_LIST']),
-        ...mapActions('todos',['REQUEST_SET_SUCCESS_MESSAGE','REQUEST_SET_ERROR_MESSAGE','REQUEST_SET_INFO_MESSAGE']),
+        ...mapActions('todos',['REQUEST_SET_SUCCESS_MESSAGE','REQUEST_SET_ERROR_MESSAGE','REQUEST_SET_INFO_MESSAGE','REQUEST_SET_DEFAULT_MESSAGE']),
+
 
         /**
          * Va être appeler l'orsque l'utilisateur créer une todo, et va faire un apelle à l'api pour créer la todo
@@ -114,10 +142,11 @@ export default {
                     return //Si jamais elle l'est alors nous sortons de notre méthode pour ne pas créer la TODO
                 }
 
-                if(this.todo_name.length > 20) { //Si jamais le nom de la todo dépasse 20 caractère
+                if(this.todo_name.length > 30) { //Si jamais le nom de la todo dépasse 30 caractère
                     this.REQUEST_SET_INFO_MESSAGE('Nom de la todo trop long !') //On demande à afficher le message d'information suivant
                     return  //Nous sortons de notre méthode
                 }
+
 
                 //Si tous est bon nous demandons à L'API DE créer notre TODO
 

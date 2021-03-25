@@ -9,7 +9,7 @@ const axios = require('axios');
  * @param password : Mot de passe de l'utilisateur
  * @axios : POST
  */
-export function API_REQUEST_LOGIN({commit},{email, password})
+export function API_REQUEST_LOGIN({commit,dispatch},{email, password})
 {
 
     commit('SET_IS_DATA_LOADING_TRUE')                                                          //On lance l'écran de chargement
@@ -19,11 +19,11 @@ export function API_REQUEST_LOGIN({commit},{email, password})
             email    : email,
             password : password
         })
-        .then(response => {                                                                     //Si axios renvoie une requête positive avec la réponse
+        .then(response => {                                                                               //Si axios renvoie une requête positive avec la réponse
 
-            commit('SET_AUTHENTIFICATION_TOKEN', response['data'].token),                       //Nous stockons le token de l'utilisateur dans le store
-            commit('SET_SUCCESS_MESSAGE', 'Connexion effectué, redirection en cours ...'),      //Nous modifions le state pour que le state reçoit le message de succees pour l'afficher
-            commit('SET_IS_ACCESS_AUTHORIZED_TRUE')                                             //Nous changons ce stauts pour dire que l'utilisateur est connecté
+            commit('SET_AUTHENTIFICATION_TOKEN', response['data'].token),                                 //Nous stockons le token de l'utilisateur dans le store
+            dispatch('REQUEST_SET_SUCCESS_MESSAGE', 'Connexion effectué, redirection en cours ...'),      //Nous modifions le state pour que le state reçoit le message de succees pour l'afficher
+            commit('SET_IS_ACCESS_AUTHORIZED_TRUE')                                                       //Nous changons ce stauts pour dire que l'utilisateur est connecté
 
 
             /**
@@ -31,20 +31,21 @@ export function API_REQUEST_LOGIN({commit},{email, password})
              *  pour re récupérer le token d'authentification
              */
 
-            localStorage.authentification_token = response['data'].token                        //Nous stockons le token dans le localstorage
+            localStorage.authentification_token = response['data'].token                                  //Nous stockons le token dans le localstorage
 
-            setTimeout(() => {                                                           //Nous redirigions après une seconde vers la page de gestion des todos
+            setTimeout(() => {                                                                     //Nous redirigions après une seconde vers la page de gestion des todos
 
                 router.push('/home')
             }, 1000)
 
         })
-        .catch(error => {                                                                       //Si jamais nous n'avons pas pus nous connecter
+        .catch(error => {                                                                                  //Si jamais nous n'avons pas pus nous connecter
 
-            commit('SET_IS_ACCESS_AUTHORIZED_FALSE')                                            //La variable nous permettant de savoir que on est connecté passe à FALSE
+            commit('SET_IS_ACCESS_AUTHORIZED_FALSE')                                                       //La variable nous permettant de savoir que on est connecté passe à FALSE
 
 
-            if(error.response) {                                                                //Si le serveur nous renvoie une réponse d'erreur
+            if(error.response) {                                                                           //Si le serveur nous renvoie une réponse d'erreur
+
 
                 /**
                  * Nous mettons un IF car si dans le futur il y'a plusieurs code d'erreur à gérer
@@ -52,18 +53,19 @@ export function API_REQUEST_LOGIN({commit},{email, password})
                  */
 
                 if(error.response.status == 401){   //401 = Impossible de se connecter
+                    dispatch('REQUEST_SET_ERROR_MESSAGE','Connexion impossible')
 
-                    commit('SET_ERROR_MESSAGE','Connexion impossible')
                 }else{
-                    commit('SET_ERROR_MESSAGE','Connexion impossible')
+                    dispatch('REQUEST_SET_ERROR_MESSAGE','Connexion impossible')
                 }
 
-            }else{                                                                             //Si jamais le serveur ne nous renvoie aucune réponse
-                commit('SET_ERROR_MESSAGE','Service indisponible pour le moment ')
+            }else{                                                                                          //Si jamais le serveur ne nous renvoie aucune réponse
+                dispatch('REQUEST_SET_ERROR_MESSAGE','Service indisponible pour le moment ')
             }
 
         })
-        .finally(() => commit('SET_IS_DATA_LOADING_FALSE'))                            //On arrête l'écran de chargement
+        .finally(() => commit('SET_IS_DATA_LOADING_FALSE'))                                         //On arrête l'écran de chargement
+
 
 }
 
@@ -74,16 +76,14 @@ export function API_REQUEST_LOGIN({commit},{email, password})
  * @param name : Le pseudo de l'utilisateur
  * @param email : L'adresse email de l'utilisateur
  * @param password : Le mot de passe de l'utilisateur
-
  * @axios : POST
  */
-export function API_REQUEST_SIGNUP({commit},{name, email, password})
+export function API_REQUEST_SIGNUP({commit,dispatch},{name, email, password})
 {
     commit('SET_IS_DATA_LOADING_TRUE');                                                         //On lance l'écran de chargement
 
     axios
         .post('http://138.68.74.39/api/register', {                                     //La requête axios pour s'inscrire prend 3 paramètre (Pseudo, Email, Mot de passe )
-
             name     : name,
             email    : email,
             password : password
@@ -91,7 +91,7 @@ export function API_REQUEST_SIGNUP({commit},{name, email, password})
         .then(response => {                                                                      //Si le serveur nous renvoie une réponse positif
 
             commit('SET_AUTHENTIFICATION_TOKEN', response['data'].token),                        //Nous stockons le token de l'utilisateur dans le state
-            commit('SET_SUCCESS_MESSAGE','Inscription effectué, redirection en cours ...')       //Nous demandons à afficher le message de success
+            dispatch('REQUEST_SET_SUCCESS_MESSAGE','Inscription effectué, redirection en cours ...')       //Nous demandons à afficher le message de success
             commit('SET_IS_ACCESS_AUTHORIZED_TRUE')                                              //Nous changons le state pour access autorise passe à TRUE
 
             /**
@@ -100,7 +100,6 @@ export function API_REQUEST_SIGNUP({commit},{name, email, password})
              */
 
             localStorage.authentification_token = response['data'].token                        //On stock le token de l'utilisateur dans le local storage
-
             setTimeout(() => {                                                           //On effectue une redirection vers la page de gestion des todos
 
                 router.push('/home')
@@ -120,13 +119,13 @@ export function API_REQUEST_SIGNUP({commit},{name, email, password})
                  */
 
                 if(error.response.status == 409){                                               //CODE 409 = Compte déja enregistrer
-                    commit('SET_ERROR_MESSAGE','Ce compte est déja enregistrer')                //On demande à afficher le message d'erreur
+                    dispatch('REQUEST_SET_ERROR_MESSAGE','Ce compte est déja enregistrer')                //On demande à afficher le message d'erreur
                 }else{
-                    commit('SET_ERROR_MESSAGE','Inscription impossible')                        //Si c'est un autre code d'erreur on affiche ce message d'erreur
+                    dispatch('REQUEST_SET_ERROR_MESSAGE','Inscription impossible')                        //Si c'est un autre code d'erreur on affiche ce message d'erreur
                 }
 
             }else{
-                commit('SET_ERROR_MESSAGE','Service indisponible pour le moment ')              //Si le serveur ne renvoie rien du tous affiche ce message d'erreur
+                dispatch('REQUEST_SET_ERROR_MESSAGE','Service indisponible pour le moment ')              //Si le serveur ne renvoie rien du tous affiche ce message d'erreur
 
 
             }
@@ -141,7 +140,8 @@ export function API_REQUEST_SIGNUP({commit},{name, email, password})
  * @param commit
  * @axios : GET
  */
-export function API_REQUEST_GET_USER({commit})
+export function API_REQUEST_GET_USER({commit, dispatch})
+
 {
 
     commit('SET_IS_DATA_LOADING_TRUE');                               //On lance l'écran de chargement
@@ -173,15 +173,21 @@ export function API_REQUEST_GET_USER({commit})
 
                 if(error.response.status == 429)                        //429 = Trop de requête à la fois
                 {
-                    commit('SET_ERROR_MESSAGE','Service indisponible')  //Demande pour mettre un message d'erreur
+                    dispatch('REQUEST_SET_ERROR_MESSAGE','Service indisponible')  //Demande pour mettre un message d'erreur
 
                 }else{
-                    commit('SET_ERROR_MESSAGE','Erreur interne')         //Demande pour mettre un message d'erreur
+                    dispatch('REQUEST_SET_ERROR_MESSAGE','Erreur interne')         //Demande pour mettre un message d'erreur
                 }
 
+
             }else{
-                commit('SET_ERROR_MESSAGE','Erreur interne')             //Demande pour mettre un message d'erreur
+                dispatch('REQUEST_SET_ERROR_MESSAGE','Erreur interne')             //Demande pour mettre un message d'erreur
             }
+
+        })
+        .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête l'écran de chargement
+
+}
 
 
         })
@@ -190,15 +196,17 @@ export function API_REQUEST_GET_USER({commit})
 }
 
 
+
 /**
  * On fait une requête pour se déconnecter
  */
 export function REQUEST_LOGOUT({commit})
 {
-    commit('SET_IS_CONNECTED_FALSE')            //L'utilisateur sera signifier comme deconnecté
     commit('SET_AUTHENTIFICATION_TOKEN','')     //Nous remettons son token par défaut
-
+    localStorage.clear()
+    router.push('/')
 }
+
 
 /**
  * On fait une requête pour modifier le message d'informations
@@ -212,10 +220,16 @@ export function REQUEST_SET_INFO_MESSAGE({commit},info_message)
 /**
  * On fait une requête pour remettre tous les message par défaut
  */
-export function REQUEST_SET_DEFAULT_MESSAGE({commit})
+export function REQUEST_SET_ERROR_MESSAGE({commit}, error_message)
+
 {
-    commit('SET_DEFAULT_MESSAGE')
+    commit('SET_ERROR_MESSAGE',error_message)
 }
+export function REQUEST_SET_SUCCESS_MESSAGE({commit}, success_message)
+{
+    commit('SET_SUCCESS_MESSAGE',success_message)
+}
+
 
 
 

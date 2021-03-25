@@ -59,17 +59,6 @@ export function SET_INFO_MESSAGE(state, info_message)
 
 
 /**
- * Permet de reinitialiser les message d'erreur
- * @param state
- */
-export function SET_DEFAULT_MESSAGE(state)
-{
-    SET_SUCCESS_MESSAGE(state,'')
-    SET_ERROR_MESSAGE(state,'')
-    SET_INFO_MESSAGE(state,'')
-}
-
-/**
  * Permet de dire que nous sommes connecté
  * @param state
  */

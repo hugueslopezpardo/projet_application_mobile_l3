@@ -33,16 +33,26 @@ export default {
     },
     methods : {
         ...mapActions('todos',['API_REQUEST_CREATE_TODO_LIST']),
-        REQUEST_CREATE_TODO_LIST()
+        ...mapActions('todos',['REQUEST_SET_INFO_MESSAGE']),
+
+      REQUEST_CREATE_TODO_LIST()
         {
 
             if(this.new_list_name) {
 
-                if(this.new_list_name.length >= 3 && this.new_list_name.length <= 10){
-
-                    this.API_REQUEST_CREATE_TODO_LIST(this.new_list_name)
-
+                if(this.new_list_name.length <3 ) {
+                    this.REQUEST_SET_INFO_MESSAGE('Nom de liste trop court')
+                    return
                 }
+
+                  if(this.new_list_name.length > 20 ) {
+                    this.REQUEST_SET_INFO_MESSAGE('Nom de liste trop long')
+                    return
+                  }
+
+
+                 this.API_REQUEST_CREATE_TODO_LIST(this.new_list_name)
+
 
             }
 

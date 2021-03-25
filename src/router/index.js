@@ -4,6 +4,9 @@ import store from '@/store'; // <-- aliased path
 
 /*
 
+    LOCAL STORAGE : TOKEN
+
+ */
 
     LOCAL STORAGE : TOKEN
 
@@ -33,7 +36,6 @@ const routes = [
         name: 'Home',
         component: () => import('../views/Home/Home.vue'),
         beforeEnter(to, from, next) {
-
 
             if(localStorage.getItem('authentification_token'))
             {
