@@ -1,19 +1,14 @@
 export default function()
 {
+    return {
 
-    return{
-
-        todos_lists     : [],    //Liste contenant toute les listes de TODO
-        current_list    : null,  //La liste sur la quel nous sommes entrain de travailler
-        current_todos   : null,  //La TODO sur la quel nous travaillons
-        todos_filter          : 'all',
-
-
-        success_message : null,  //Le message a afficher en cas de success
-        error_message   : null,  //Le message a afficher en cas d'erreur
-
-        is_data_loading : false  //Permet de savoir si nous devons afficher l'écran de chargement
+        is_data_loading        : false,     //Permet de savoir si nous devons afficher un écran de chargement
+        success_message        : '',        //Permet de stocker un message à afficher en cas de success d'une requête
+        error_message          : '',        //Permet de stocker un message à afficher en cas d'erreur d'une requête
+        info_message           : '',        //Permet de stocker un message d'info à afficher à l'utilisateur
+        default_list           : [],        //La liste de contenant toutes les lists de TODO récupérer depuis l'api
+        current_list           : null,      //La liste courrante sur la quel nous travaillons
+        filter                 : 'all'      //Le filtre à appliquer sur notre liste
 
     }
-
 }
