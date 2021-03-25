@@ -1,12 +1,9 @@
 export function SET_LOGIN_INFORMATION(state, authentification_token)
 {
-    state.authentification_token = authentification_token //On stocke le token d'authentification dans le store
+    state.authentification_token        = authentification_token //On stock le token d'authentification dans le store
+    localStorage.authentification_token = authentification_token //On stock le token dans le local storage par la même occassion
 }
 
-export function SET_IS_AUTHENTICATED_FALSE(state)
-{
-    state.is_authenticated = false
-}
 
 export function SET_IS_DATA_LOADING_TRUE(state)
 {
@@ -28,3 +25,9 @@ export function SET_ERROR_MESSAGE(state, error_message)
     state.error_message = error_message
 }
 
+export function SET_RESET_MESSAGES(state)
+{
+    SET_ERROR_MESSAGE(state, '')
+    SET_SUCCESS_MESSAGE(state, '')
+
+}
