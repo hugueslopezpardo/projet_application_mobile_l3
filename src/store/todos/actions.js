@@ -204,6 +204,7 @@ export function API_REQUEST_DELETE_TODO_LIST({commit}, todo_list_id)
 
         .then((response) => {
 
+
             commit('SET_SUCCESS_MESSAGE','Liste parfaitement supprimer'),
             commit('DELETE_TODO_LIST',todo_list_id)
             console.log(response)
@@ -263,7 +264,9 @@ export function API_REQUEST_CREATE_TODO_LIST({commit}, name)
 
         ))
 
+
 }
+
 
 
 
@@ -308,3 +311,21 @@ export function REQUEST_SET_NOT_FINISH_TODOS({commit})
     commit('SET_NOT_FINISH_TODOS')
 
 }
+
+
+
+export function REQUEST_SET_INFO_MESSAGE({commit},info_message)
+{
+    commit('SET_INFO_MESSAGE',info_message)
+}
+
+export function REQUEST_SET_SUCCESS_MESSAGE({commit},success)
+{
+    commit('SET_SUCCESS_MESSAGE',success)
+}
+
+export function REQUEST_SET_ERROR_MESSAGE({commit},error_message)
+{
+    commit('SET_ERROR_MESSAGE',error_message)
+}
+

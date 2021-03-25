@@ -26,11 +26,26 @@ export function SET_DEFAULT_LIST(state, default_list)
  */
 export function SET_DEFAULT_MESSAGE(state)
 {
-    SET_SUCCESS_MESSAGE(state,'')
+    SET_DEFAULT_SUCCESS_MESSAGE(state,'')
     SET_ERROR_MESSAGE(state,'')
     SET_INFO_MESSAGE(state,'')
 }
 
+
+export function SET_DEFAULT_SUCCESS_MESSAGE()
+{
+    SET_SUCCESS_MESSAGE('')
+}
+
+export function SET_DEFAULT_ERROR_MESSAGE()
+{
+    SET_ERROR_MESSAGE('')
+}
+
+export function SET_DEFAULT_INFO_MESSAGE()
+{
+    SET_INFO_MESSAGE('')
+}
 
 /**
  * Permet de donner le message en cas de success
@@ -39,7 +54,11 @@ export function SET_DEFAULT_MESSAGE(state)
  */
 export function SET_SUCCESS_MESSAGE(state, success_message)
 {
+
     state.success_message = success_message
+    SET_DEFAULT_ERROR_MESSAGE()
+    SET_DEFAULT_INFO_MESSAGE()
+
 }
 
 /**
@@ -50,6 +69,8 @@ export function SET_SUCCESS_MESSAGE(state, success_message)
 export function SET_ERROR_MESSAGE(state, error_message)
 {
     state.error_message = error_message
+    SET_DEFAULT_INFO_MESSAGE()
+    SET_DEFAULT_SUCCESS_MESSAGE()
 }
 
 /**
@@ -60,6 +81,9 @@ export function SET_ERROR_MESSAGE(state, error_message)
 export function SET_INFO_MESSAGE(state, info_message)
 {
     state.info_message = info_message;
+    SET_DEFAULT_ERROR_MESSAGE()
+    SET_DEFAULT_SUCCESS_MESSAGE()
+
 }
 
 
@@ -78,7 +102,6 @@ export function SET_IS_DATA_LOADING_TRUE(state)
  * @param state
  */
 export function SET_IS_DATA_LOADING_FALSE(state)
-
 {
     state.is_data_loading = false;
 }
@@ -121,12 +144,22 @@ export function UPDATE_TODO_NAME_IN_LIST(state, {todo_id, new_name})
 }
 
 
+
 export function DELETE_TODO_LIST(state, todo_list_id)
 {
     let i = get_index(state.default_list, todo_list_id)
     state.default_list.splice(i, 1)
     SET_CURRENT_LIST(state, null)
 }
+
+
+export function DELETE_TODO_LIST(state, todo_list_id)
+{
+    let i = get_index(state.default_list, todo_list_id)
+    state.default_list.splice(i, 1)
+    SET_CURRENT_LIST(state, null)
+}
+
 
 export function CREATE_TODO_LIST(state, {id, name, user_id, created_at, updated_at, nb_todos, todos})
 {
@@ -171,6 +204,16 @@ export function SET_FINISH_TODOS(state)
 export function SET_ALL_TODOS(state)
 {
     state.filter = 'all'
+}
+
+
+/**
+ * Permet de récupérer la position de la todo dans une liste
+ * @param todo_id
+ */
+function get_index(liste,todo_id)
+{
+    return liste.map(item => item.id).indexOf(todo_id)
 }
 
 

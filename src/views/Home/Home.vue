@@ -20,9 +20,7 @@
                 <TodosLists v-if="GET_CURRENT_LIST != null" :current_list="GET_CURRENT_LIST" />
                 <InfoMessage v-else message="Cliquez sur une liste pour pouvoir y acceder" />
             </div>
-
         </div>
-
 
     </div>
 
@@ -50,9 +48,8 @@ export default {
     },
     computed : {
         ...mapGetters('accounts',['GET_USER_DATA','GET_IS_ACCESS_AUTHORIZED']),
-
         ...mapGetters('todos',['GET_DEFAULT_LIST','GET_CURRENT_LIST']),
-        ...mapGetters('accounts',['GET_SUCCESS_MESSAGE','GET_ERROR_MESSAGE','GET_INFO_MESSAGE']),
+        ...mapGetters('todos',['GET_SUCCESS_MESSAGE','GET_ERROR_MESSAGE','GET_INFO_MESSAGE']),
 
 
     },
