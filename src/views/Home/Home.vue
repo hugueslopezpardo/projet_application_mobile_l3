@@ -1,12 +1,18 @@
 <template>
 
-    <div class="container-fluid">
+    <div class="container-fluid mt-3">
+
+        <div class="row">
+          <TopRow :user_data="GET_USER_DATA"/>
+        </div>
+
         <div class="row">
             <div class="col-3 mt-5">
-                <SideBar :todos_lists="GET_TODOS_LISTS"/>
+                <SideBar :default_list="GET_DEFAULT_LIST"/>
             </div>
-            <div class="col mt-5">
-                <TodosLists :current_list="GET_CURRENT_LIST"/>
+            <div id="todos-lists" class="col mt-5">
+                <TodosLists v-if="GET_CURRENT_LIST != null" :current_list="GET_CURRENT_LIST" />
+                <InfoMessage v-else message="Cliquez sur une liste pour pouvoir y acceder" />
             </div>
 
         </div>
@@ -18,38 +24,31 @@
 
 <script>
 
-import SideBar from '@/components/Home/SideBar/SideBar.vue'
-import TodosLists from '@/components/Home/TodoLists/TodosLists.vue'
+
 import {mapActions, mapGetters} from "vuex";
+import SideBar from "@/components/Home/SideBar/SideBar";
+import TodosLists from "@/components/Home/TodosLists/TodosLists";
+import TopRow from "@/components/Home/TopRow/TopRow";
+import InfoMessage from "@/components/Message/InfoMessage.vue";
 
 export default {
     name: "Home",
-    components : {
-        SideBar,
-        TodosLists
-    },
+    components: {TopRow, InfoMessage, TodosLists, SideBar},
     methods : {
-
-        ...mapActions('todos',['API_REQUEST_GET_TODO_LISTS'])
+        ...mapActions('accounts',['API_REQUEST_GET_USER']),
+        ...mapActions('todos',['API_REQUEST_GET_TODOS_LISTS']),
 
     },
     computed : {
-
-        ...mapGetters('accounts',['GET_AUTHENTIFICATION_TOKEN']),
-        ...mapGetters('todos',['GET_TODOS_LISTS']),
-        ...mapGetters('todos',['GET_CURRENT_LIST'])
-
+        ...mapGetters('accounts',['GET_USER_DATA','GET_IS_ACCESS_AUTHORIZED']),
+        ...mapGetters('todos',['GET_DEFAULT_LIST','GET_CURRENT_LIST'])
     },
     mounted() {
-
-        if(localStorage.authentification_token){
-            this.API_REQUEST_GET_TODO_LISTS(localStorage.authentification_token)
-        }else{
-            this.API_REQUEST_GET_TODO_LISTS(this.GET_AUTHENTIFICATION_TOKEN)
-
-        }
+        this.API_REQUEST_GET_USER(localStorage.authentification_token)
+        this.API_REQUEST_GET_TODOS_LISTS(localStorage.authentification_token)
     }
 }
+
 </script>
 
 <style scoped>

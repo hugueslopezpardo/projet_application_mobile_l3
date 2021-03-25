@@ -181,5 +181,3 @@ function get_index(liste,todo_id)
 {
     return liste.map(item => item.id).indexOf(todo_id)
 }
-
-
