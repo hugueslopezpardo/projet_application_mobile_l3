@@ -1,11 +1,10 @@
 <template>
-    <a v-on:click="SET_CURRENT_LIST" class="list-group-item list-group-item-action" id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab" aria-controls="home">{{list_name}}</a>
+    <a v-on:click="REQUEST_SET_CURRENT_LIST(list_position_id)" class="list-group-item list-group-item-action" id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab" aria-controls="home">{{list_name}}</a>
 </template>
 
 <script>
 
 import {mapActions} from "vuex";
-
 
 export default {
     name: "SideBarItem",
@@ -15,10 +14,6 @@ export default {
     },
     methods : {
         ...mapActions('todos',['REQUEST_SET_CURRENT_LIST']),
-        SET_CURRENT_LIST()
-        {
-            this.REQUEST_SET_CURRENT_LIST(this.list_position_id)
-        }
     }
 }
 </script>

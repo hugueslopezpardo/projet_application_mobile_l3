@@ -1,31 +1,66 @@
 const axios = require('axios');
 
-/**================================================================================================
- *                                       API - CREATE
- *================================================================================================**/
+/**
+ * Requête vers l'API pour récupérer la liste des todos
+ * @param commit
+ * @param authentification_token
+ * @constructor
+ */
+export function API_REQUEST_GET_TODOS_LISTS({commit}, authentification_token)
+{
+    axios.create({
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+ authentification_token
+        }
+    })
+        .get('http://138.68.74.39/api/todolists')
+        .then(response => {
+
+            commit('SET_DEFAULT_LIST', response['data'])
+
+        })
+        .catch(error => (
+
+            console.log(error)
+
+        ))
+        .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête le chargement
+}
+
 
 /**
- * Permet de créer une TODO
- * @axios : POST
+ * Permet de créer une todo dans la liste
+ * @param commit
+ * @param name
+ * @param todolist_id
+ * @constructor
  */
-export function API_REQUEST_CREATE_TODO({commit},{authentification_token, name, completed, todolist_id})
+export function API_REQUEST_CREATE_TODO({commit},{name , todolist_id})
 {
 
     axios.create({
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ authentification_token
+            'Authorization': 'Bearer '+ localStorage.authentification_token
         }
     })
         .post('http://138.68.74.39/api/todo',{
             name        : name,
-            completed   : completed,
+            completed   : 0,
             todolist_id : todolist_id
         })
 
-        .then(reponse => {
+        .then(response => {
 
-            console.log(reponse)
+            commit('ADD_TODO_IN_LIST',{
+                id          : response['data'].id,
+                todolist_id : response['data'].todolist_id,
+                name        : response['data'].name,
+                completed   : response['data'].completed,
+                created_at  : response['data'].created_at,
+                update_at   : response['data'].update_at
+            })
 
         })
         .catch(error => (
@@ -35,64 +70,30 @@ export function API_REQUEST_CREATE_TODO({commit},{authentification_token, name, 
         ))
         .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête le chargement
 
+
 }
 
+
 /**
- * Permet de créer une liste de TODO
- * @axios : POST
+ * Va permettre de supprimer une todo d'une liste
+ * @param commit
+ * @param todo_id
+ * @constructor
  */
-export function API_REQUEST_CREATE_TODO_LIST({commit}, {name, authentification_token})
+export function API_REQUEST_DELETE_TODO({commit}, todo_id)
 {
 
     axios.create({
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ authentification_token
-        }
-    })
-        .post('http://138.68.74.39/api/todolist', {
-            name : name
-        })
-
-        .then((response) => {
-
-            commit('SET_SUCCESS_MESSAGE','Liste parfaitement créer'),
-            console.log(response)
-
-        })
-        .catch((error) => (
-
-            commit('SET_ERROR_MESSAGE','Erreur lors de la création de la liste'),
-            console.log(error)
-
-        ))
-
-}
-
-
-
-/**================================================================================================
- *                                         API - DELETE
- *================================================================================================**/
-
-/**
- * Permet de supprimer une TODO
- * @axios : DEL
- */
-export function API_REQUEST_DELETE_TODO({commit}, {todo_id, authentification_token})
-{
-
-    axios.create({
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ authentification_token
+            'Authorization': 'Bearer '+ localStorage.authentification_token
         }
     })
         .delete('http://138.68.74.39/api/todo/' + todo_id)
 
-        .then(reponse => {
+        .then(response => {
 
-            console.log(reponse)
+            commit('REMOVE_TODO_IN_LIST',response['data'].id)
 
         })
         .catch(error => (
@@ -103,17 +104,100 @@ export function API_REQUEST_DELETE_TODO({commit}, {todo_id, authentification_tok
         .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête le chargement
 }
 
+
 /**
- * Permet de supprimer une liste de TODO
- * @axios : DEL
+ * Permet de changer le status d'une TODO ( Faite / pas Faite )
+ * @param commit
+ * @param name
+ * @param completed
+ * @param todolist_id
+ * @param todo_id
+ * @constructor
  */
-export function API_REQUEST_DELETE_TODO_LIST({commit}, {todo_list_id, authentification_token})
+export function API_REQUEST_CHANGE_TODO_STATUS({commit},{name, completed, todolist_id, todo_id})
 {
 
     axios.create({
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ authentification_token
+            'Authorization': 'Bearer '+ localStorage.authentification_token
+        }
+    })
+        .post('http://138.68.74.39/api/completeTodo/' + todo_id, {
+            name        : name,
+            completed   : completed,
+            todolist_id : todolist_id
+        })
+        .then(response => {
+
+            commit('UPDATE_TODO_STATUS_IN_LIST',response['data'].id)
+            console.log(response)
+
+        })
+        .catch(error => (
+
+            console.log(error)
+
+        ))
+        .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête le chargement
+
+}
+
+
+/**
+ * Permet de mettre à jour une TODO
+ * @param commit
+ * @param name
+ * @param completed
+ * @param todolist_id
+ * @param todo_id
+ */
+export function API_REQUEST_UPDATE_TODO({commit},{name, todo_id})
+{
+
+    console.log(name, todo_id)
+
+    axios.create({
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+ localStorage.authentification_token
+        }
+    })
+        .patch('http://138.68.74.39/api/todo/' + todo_id, {
+            name : name,
+        })
+        .then(response => {
+
+
+            commit('UPDATE_TODO_NAME_IN_LIST',{
+                todo_id  : response['data'].id,
+                new_name : name
+            })
+
+        })
+        .catch(error => (
+
+            console.log(error)
+
+        ))
+        .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête le chargement
+}
+
+
+/**
+ * Permet de supprimer une liste de TODO
+ * @param commit
+ * @param todo_list_id
+ * @param authentification_token
+ * @constructor
+ */
+export function API_REQUEST_DELETE_TODO_LIST({commit}, todo_list_id)
+{
+
+    axios.create({
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+ localStorage.authentification_token
         }
     })
         .delete('http://138.68.74.39/api/todolist/' + todo_list_id)
@@ -121,6 +205,7 @@ export function API_REQUEST_DELETE_TODO_LIST({commit}, {todo_list_id, authentifi
         .then((response) => {
 
             commit('SET_SUCCESS_MESSAGE','Liste parfaitement supprimer'),
+            commit('DELETE_TODO_LIST',todo_list_id)
             console.log(response)
 
         })
@@ -135,144 +220,109 @@ export function API_REQUEST_DELETE_TODO_LIST({commit}, {todo_list_id, authentifi
 }
 
 
-/**================================================================================================
- *                                         API - UPDATE
- *================================================================================================**/
-
 /**
- * Permet de mettre à jour une TODO
- * @axios : PATCH
+ * Permet de créer une liste de TODO
+ * @axios : POST
  */
-export function API_REQUEST_UPDATE_TODO({commit},{name, completed, todolist_id, todo_id, authentification_token})
-{
-    axios.create({
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ authentification_token
-        }
-    })
-        .patch('http://138.68.74.39/api/completeTodo/' + todo_id, {
-            name        : name,
-            completed   : completed,
-            todolist_id : todolist_id
-        })
-        .then(reponse => {
-
-            console.log(reponse)
-
-        })
-        .catch(error => (
-
-            console.log(error)
-
-        ))
-        .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête le chargement
-}
-
-export function API_REQUEST_CHANCE_TODO_STATUS({commit},{name, completed, todolist_id, todo_id, authentification_token})
+export function API_REQUEST_CREATE_TODO_LIST({commit}, name)
 {
 
     axios.create({
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ authentification_token
+            'Authorization': 'Bearer '+ localStorage.authentification_token
         }
     })
-        .post('http://138.68.74.39/api/completeTodo/' + todo_id, {
-            name        : name,
-            completed   : completed,
-            todolist_id : todolist_id
+        .post('http://138.68.74.39/api/todolist', {
+            name : name
         })
-        .then(reponse => {
 
-            console.log(reponse)
+        .then((response) => {
+
+            commit('SET_SUCCESS_MESSAGE','Liste parfaitement créer'),
+            commit('CREATE_TODO_LIST', {
+
+                id          : response['data'].id,
+                name        : response['data'].name,
+                user_id     : response['data'].user_id,
+                created_at  : response['data'].created_at,
+                updated_at  : response['data'].updated_at,
+                nb_todos    : response['data'].nb_todos,
+                todos       : response['data'].todos,
+
+            })
+
+
+            console.log(response)
 
         })
-        .catch(error => (
+        .catch((error) => (
 
-            console.log(error)
+            commit('SET_ERROR_MESSAGE','Erreur lors de la création de la liste'),
+                console.log(error)
 
         ))
-        .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête le chargement
 
 }
 
-/**================================================================================================
- *                                         API - GET
- *================================================================================================**/
+
+
 
 
 /**
- * Permet de récupérer une TODO
- * @axios : GET
+ * Permet choisir la liste en cours
+ * @constructor
  */
-export function API_REQUEST_GET_TODO()
+export function REQUEST_SET_CURRENT_LIST({commit},list_position)
 {
-
+    commit('SET_CURRENT_LIST',list_position)
 }
+
 
 /**
- * Permet de récupérer les lists de TODO de l'utilisateur
- * @axios : GET
+ * Permet de changer le filtre sur toute les TODO
+ * @param commit
+ * @constructor
  */
-export function API_REQUEST_GET_TODO_LISTS({commit}, authentification_token)
-{
-    axios.create({
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ authentification_token
-        }
-    })
-        .get('http://138.68.74.39/api/todolists')
-        .then(reponse => {
-
-            commit('SET_TODOS_LISTS', reponse['data'])
-
-        })
-        .catch(error => (
-
-            console.log(error)
-
-        ))
-        .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête le chargement
-}
-
-
-/**================================================================================================
- *                                         LOCAL - CREATE
- *================================================================================================**/
-
-/**================================================================================================
- *                                         LOCAL - DELETE
- *================================================================================================**/
-
-
-/**================================================================================================
- *                                         LOCAL - ACTIONS
- *================================================================================================**/
-
-
-export function REQUEST_SET_CURRENT_LIST({commit}, list_position_id)
-{
-    commit('SET_CURRENT_LIST',list_position_id)
-}
-
 export function REQUEST_SET_ALL_TODOS({commit})
 {
     commit('SET_ALL_TODOS')
 }
 
+/**
+ * Permet de changer le filtre sur les todos finis
+ * @param commit
+ * @constructor
+ */
 export function REQUEST_SET_FINISH_TODOS({commit})
 {
     commit('SET_FINISH_TODOS')
 }
 
+/**
+ * Permet de changer le filtre sur les todos non finis
+ * @param commit
+ * @constructor
+ */
 export function REQUEST_SET_NOT_FINISH_TODOS({commit})
 {
     commit('SET_NOT_FINISH_TODOS')
 
 }
 
-/**================================================================================================
- *                                         LOCAL - GET
- *================================================================================================**/
+
+
+export function REQUEST_SET_INFO_MESSAGE({commit},info_message)
+{
+    commit('SET_INFO_MESSAGE',info_message)
+}
+
+export function REQUEST_SET_SUCCESS_MESSAGE({commit},success)
+{
+    commit('SET_SUCCESS_MESSAGE',success)
+}
+
+export function REQUEST_SET_ERROR_MESSAGE({commit},error_message)
+{
+    commit('SET_ERROR_MESSAGE',error_message)
+}
