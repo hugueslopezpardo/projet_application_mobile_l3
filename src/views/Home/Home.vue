@@ -14,7 +14,6 @@
 
     </div>
 
-
 </template>
 
 <script>
@@ -47,6 +46,7 @@ export default {
             this.API_REQUEST_GET_TODO_LISTS(localStorage.authentification_token)
         }else{
             this.API_REQUEST_GET_TODO_LISTS(this.GET_AUTHENTIFICATION_TOKEN)
+
         }
     }
 }

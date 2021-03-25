@@ -8,6 +8,7 @@ export default function()
         current_todos   : null,  //La TODO sur la quel nous travaillons
         todos_filter          : 'all',
 
+
         success_message : null,  //Le message a afficher en cas de success
         error_message   : null,  //Le message a afficher en cas d'erreur
 
