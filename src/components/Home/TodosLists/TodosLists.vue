@@ -24,6 +24,7 @@
       </div>
 
         <div class="mb-3 mt-3">
+
             <label for="create-new-list-input" class="form-label">Créer une TODO</label>
             <input v-model="todo_name" type="text" class="form-control" id="create-new-list-input" placeholder="Nom de votre tâche ...">
             <div id="emailHelp" class="form-text">3 caractère minimum / 20 caractère maximum</div>
@@ -45,6 +46,7 @@
       <ul class="list-group">
             <TodosListsItem v-for="(todo, key) in GET_CURRENT_FILTRED_LIST" v-bind:key="key" :todo="todo" :todo_position_in_list="key"/>
         </ul>
+
     </div>
 
 </template>
@@ -60,6 +62,7 @@ export default {
     name: "TodosLists",
     data() {
         return {
+
             todo_name : null,
             pourcentage : '0'
         }
@@ -89,6 +92,7 @@ export default {
         }
     },
     computed : {
+
         ...mapGetters('todos',['GET_CURRENT_FILTRED_LIST','GET_DEFAULT_LIST','GET_CURRENT_LIST','GET_NB_TODOS_FINISH','GET_NB_TODOS']),
 
         GET_POURCENTAGE_FINISH_BAR()
@@ -97,7 +101,6 @@ export default {
           return ( this.GET_NB_TODOS_FINISH / this.GET_NB_TODOS ) * 100
 
         }
-
 
     }
 }

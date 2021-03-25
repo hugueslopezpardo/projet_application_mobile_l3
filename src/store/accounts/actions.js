@@ -51,6 +51,7 @@ export function API_REQUEST_LOGIN({commit},{email, password})
                  */
 
                 if(error.response.status == 401){   //Impossible de se connecter
+
                     commit('SET_ERROR_MESSAGE','Connexion impossible')
                 }else{
                     commit('SET_ERROR_MESSAGE','Connexion impossible')
@@ -58,6 +59,7 @@ export function API_REQUEST_LOGIN({commit},{email, password})
 
             }else{
                 commit('SET_ERROR_MESSAGE','Service indisponible pour le moment ')
+
             }
 
         })
@@ -97,6 +99,7 @@ export function API_REQUEST_SIGNUP({commit},{name, email, password})
              */
 
             localStorage.authentification_token = response['data'].token
+
 
             setTimeout(() => {  //On effectue une redirection vers la page des todos
                 router.push('/home')
@@ -171,6 +174,7 @@ export function API_REQUEST_GET_USER({commit}, authentification_token)
 
 
         })
+
         .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête l'écran de chargement
 
 }
@@ -184,7 +188,6 @@ export function REQUEST_LOGOUT({commit})
     commit('SET_AUTHENTIFICATION_TOKEN','')     //Nous remettons son token par défaut
 }
 
-
 export function REQUEST_SET_INFO_MESSAGE({commit},info_message)
 {
     commit('SET_INFO_MESSAGE',info_message)
@@ -194,7 +197,5 @@ export function REQUEST_SET_DEFAULT_MESSAGE({commit})
 {
     commit('SET_DEFAULT_MESSAGE')
 }
-
-
 
 

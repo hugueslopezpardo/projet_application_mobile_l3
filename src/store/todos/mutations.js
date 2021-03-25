@@ -78,6 +78,7 @@ export function SET_IS_DATA_LOADING_TRUE(state)
  * @param state
  */
 export function SET_IS_DATA_LOADING_FALSE(state)
+
 {
     state.is_data_loading = false;
 }
@@ -181,6 +182,4 @@ function get_index(liste,todo_id)
 {
     return liste.map(item => item.id).indexOf(todo_id)
 }
-
-
 

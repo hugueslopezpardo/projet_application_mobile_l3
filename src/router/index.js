@@ -8,6 +8,7 @@ import store from '@/store'; // <-- aliased path
 
  */
 
+
 const routes = [
     {
         path: '/',
@@ -32,8 +33,6 @@ const routes = [
         name: 'Home',
         component: () => import('../views/Home/Home.vue'),
         beforeEnter(to, from, next) {
-
-
             if(localStorage.getItem('authentification_token'))
             {
                 next();

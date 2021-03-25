@@ -113,3 +113,4 @@ export function GET_NB_TODOS_FINISH(state)
     return state.current_list.todos.filter(t => t.completed).length
 }
 
+
