@@ -1,13 +1,11 @@
 <template>
 
-    <h1>Home</h1>
-
     <div class="container-fluid">
         <div class="row">
-            <div class="col-2">
+            <div class="col-3 mt-5">
                 <SideBar :todos_lists="GET_TODOS_LISTS"/>
             </div>
-            <div class="col-7">
+            <div class="col mt-5">
                 <TodosLists :current_list="GET_CURRENT_LIST"/>
             </div>
         </div>
@@ -28,12 +26,16 @@ export default {
         TodosLists
     },
     methods : {
+
         ...mapActions('todos',['API_REQUEST_GET_TODO_LISTS'])
+
     },
     computed : {
+
         ...mapGetters('accounts',['GET_AUTHENTIFICATION_TOKEN']),
         ...mapGetters('todos',['GET_TODOS_LISTS']),
         ...mapGetters('todos',['GET_CURRENT_LIST'])
+
     },
     mounted() {
 

@@ -22,3 +22,8 @@ export function GET_CURRENT_LIST(state)
 {
     return state.current_list
 }
+
+export function GET_CURRENT_TODOS(state)
+{
+    return state.current_todos
+}
