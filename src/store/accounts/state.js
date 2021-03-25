@@ -1,17 +1,14 @@
 export default function()
 {
+    return {
 
-    return{
-
-        todos_lists     : [],    //Liste contenant toute les listes de TODO
-        current_list    : null,  //La liste sur la quel nous sommes entrain de travailler
-        current_todo    : null,  //La TODO sur la quel nous travaillons
-
-        success_message : '',  //Le message a afficher en cas de success
-        error_message   : '',  //Le message a afficher en cas d'erreur
-
-        is_data_loading : false  //Permet de savoir si nous devons afficher l'écran de chargement
+        is_data_loading        : false,     //Permet de savoir si nous devons afficher un écran de chargement
+        success_message        : '',        //Permet de stocker un message à afficher en cas de success d'une requête
+        error_message          : '',        //Permet de stocker un message à afficher en cas d'erreur d'une requête
+        info_message           : '',        //Permet de stocker un message d'info à afficher à l'utilisateur
+        authentification_token : '',        //Permet de stocker le token d'authentification
+        is_access_authorized   : false,     //Permet de savoir si l'utilisateur est identifier ou non
+        user_data              : []         //Permet de stocker les données de l'utilisateur
 
     }
-
 }
