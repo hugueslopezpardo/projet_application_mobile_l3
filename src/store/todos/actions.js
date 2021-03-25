@@ -6,6 +6,7 @@ const axios = require('axios');
  * @param authentification_token
  */
 export function API_REQUEST_GET_TODOS_LISTS({commit})
+
 {
     axios.create({
         headers: {
@@ -203,6 +204,7 @@ export function API_REQUEST_DELETE_TODO_LIST({commit}, todo_list_id)
 
         .then((response) => {
 
+
             commit('SET_SUCCESS_MESSAGE','Liste parfaitement supprimer'),
             commit('DELETE_TODO_LIST',todo_list_id)
             console.log(response)
@@ -210,10 +212,12 @@ export function API_REQUEST_DELETE_TODO_LIST({commit}, todo_list_id)
         })
         .catch((error) => {
 
+
             commit('SET_ERROR_MESSAGE','Erreur lors de la supréssion de la liste'),
             console.log(error)
 
         })
+
 
 
 }
@@ -241,6 +245,7 @@ export function API_REQUEST_CREATE_TODO_LIST({commit}, name)
             commit('SET_SUCCESS_MESSAGE','Liste parfaitement créer'),
             commit('CREATE_TODO_LIST', {
 
+
                 id          : response['data'].id,
                 name        : response['data'].name,
                 user_id     : response['data'].user_id,
@@ -263,9 +268,6 @@ export function API_REQUEST_CREATE_TODO_LIST({commit}, name)
         ))
 
 }
-
-
-
 
 
 /**
@@ -338,3 +340,4 @@ export function REQUEST_SET_ERROR_MESSAGE({commit},error_message)
 {
     commit('SET_ERROR_MESSAGE',error_message)
 }
+

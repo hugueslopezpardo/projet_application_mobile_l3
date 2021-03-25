@@ -4,6 +4,7 @@ import store from '@/store'; // <-- aliased path
 
 /*
 
+
     LOCAL STORAGE : TOKEN
 
  */
@@ -38,6 +39,7 @@ const routes = [
             {
                 next();
             }else{
+
                 if(store.getters['accounts/GET_IS_ACCESS_AUTHORIZED']) {
                     next()
                 }else{

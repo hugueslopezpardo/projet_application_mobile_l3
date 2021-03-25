@@ -62,5 +62,3 @@ export function GET_IS_ACCESS_AUTHORIZED(state)
     return state.is_access_authorized
 }
 
-
-
