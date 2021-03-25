@@ -2,12 +2,18 @@ import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'; // <-- aliased path
 
 
+/*
+
+
+    LOCAL STORAGE : TOKEN
+
+ */
+
 const routes = [
     {
         path: '/',
         name: 'Welcome',
         component: () => import('../views/Welcome/Welcome.vue'),
-
 
         beforeEnter(to, from, next) {
 

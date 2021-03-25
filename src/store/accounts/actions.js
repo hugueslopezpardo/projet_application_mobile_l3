@@ -65,7 +65,6 @@ export function API_REQUEST_LOGIN({commit},{email, password})
         })
         .finally(() => commit('SET_IS_DATA_LOADING_FALSE'))                            //On arrête l'écran de chargement
 
-
 }
 
 
@@ -182,12 +181,10 @@ export function API_REQUEST_GET_USER({commit})
 
             }else{
                 commit('SET_ERROR_MESSAGE','Erreur interne')             //Demande pour mettre un message d'erreur
-
             }
 
 
         })
-
         .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête l'écran de chargement
 
 }
@@ -196,7 +193,6 @@ export function API_REQUEST_GET_USER({commit})
 /**
  * On fait une requête pour se déconnecter
  */
-
 export function REQUEST_LOGOUT({commit})
 {
     commit('SET_IS_CONNECTED_FALSE')            //L'utilisateur sera signifier comme deconnecté

@@ -51,11 +51,11 @@ export default {
         ...mapGetters('todos',['GET_DEFAULT_LIST','GET_CURRENT_LIST']),
         ...mapGetters('todos',['GET_SUCCESS_MESSAGE','GET_ERROR_MESSAGE','GET_INFO_MESSAGE']),
 
-
     },
     mounted() {
-        this.API_REQUEST_GET_USER(localStorage.authentification_token)
-        this.API_REQUEST_GET_TODOS_LISTS(localStorage.authentification_token)
+        this.API_REQUEST_GET_USER()
+        this.API_REQUEST_GET_TODOS_LISTS()
+
     }
 }
 

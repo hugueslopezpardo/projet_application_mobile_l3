@@ -4,14 +4,14 @@ const axios = require('axios');
  * Requête vers l'API pour récupérer la liste des todos
  * @param commit
  * @param authentification_token
- * @constructor
  */
-export function API_REQUEST_GET_TODOS_LISTS({commit}, authentification_token)
+export function API_REQUEST_GET_TODOS_LISTS({commit})
+
 {
     axios.create({
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ authentification_token
+            'Authorization': 'Bearer '+ localStorage.authentification_token
         }
     })
         .get('http://138.68.74.39/api/todolists')
@@ -210,12 +210,14 @@ export function API_REQUEST_DELETE_TODO_LIST({commit}, todo_list_id)
             console.log(response)
 
         })
-        .catch((error) => (
+        .catch((error) => {
+
 
             commit('SET_ERROR_MESSAGE','Erreur lors de la supréssion de la liste'),
             console.log(error)
 
-        ))
+        })
+
 
 
 }
@@ -243,6 +245,7 @@ export function API_REQUEST_CREATE_TODO_LIST({commit}, name)
             commit('SET_SUCCESS_MESSAGE','Liste parfaitement créer'),
             commit('CREATE_TODO_LIST', {
 
+
                 id          : response['data'].id,
                 name        : response['data'].name,
                 user_id     : response['data'].user_id,
@@ -264,11 +267,7 @@ export function API_REQUEST_CREATE_TODO_LIST({commit}, name)
 
         ))
 
-
 }
-
-
-
 
 
 /**
@@ -309,21 +308,34 @@ export function REQUEST_SET_FINISH_TODOS({commit})
 export function REQUEST_SET_NOT_FINISH_TODOS({commit})
 {
     commit('SET_NOT_FINISH_TODOS')
-
 }
 
 
-
+/**
+ * Permet de modifier le message d'informations
+ * @param commit
+ * @param info_message
+ */
 export function REQUEST_SET_INFO_MESSAGE({commit},info_message)
 {
     commit('SET_INFO_MESSAGE',info_message)
 }
 
+/**
+ * Requête pour modifier le message de success
+ * @param commit
+ * @param success
+ */
 export function REQUEST_SET_SUCCESS_MESSAGE({commit},success)
 {
     commit('SET_SUCCESS_MESSAGE',success)
 }
 
+/**
+ * Permet de modifier le message d'erreur
+ * @param commit
+ * @param error_message
+ */
 export function REQUEST_SET_ERROR_MESSAGE({commit},error_message)
 {
     commit('SET_ERROR_MESSAGE',error_message)
