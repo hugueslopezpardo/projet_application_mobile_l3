@@ -78,6 +78,7 @@ export function SET_IS_DATA_LOADING_TRUE(state)
  * @param state
  */
 export function SET_IS_DATA_LOADING_FALSE(state)
+
 {
     state.is_data_loading = false;
 }
@@ -97,6 +98,7 @@ export function ADD_TODO_IN_LIST(state,{ id, todolist_id, name, completed, creat
     })
 
 }
+
 
 export function REMOVE_TODO_IN_LIST(state, todo_id)
 {
@@ -148,7 +150,6 @@ export function CREATE_TODO_LIST(state, {id, name, user_id, created_at, updated_
  */
 export function SET_NOT_FINISH_TODOS(state)
 {
-
     state.filter = 'todo'
 }
 
@@ -181,3 +182,4 @@ function get_index(liste,todo_id)
 {
     return liste.map(item => item.id).indexOf(todo_id)
 }
+

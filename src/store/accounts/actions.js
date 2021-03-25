@@ -50,7 +50,8 @@ export function API_REQUEST_LOGIN({commit},{email, password})
                  * il sera alors plus facile d'adapter pour gérer les différents code
                  */
 
-                if(error.response.status == 401){
+                if(error.response.status == 401){   //Impossible de se connecter
+
                     commit('SET_ERROR_MESSAGE','Connexion impossible')
                 }else{
                     commit('SET_ERROR_MESSAGE','Connexion impossible')
@@ -98,6 +99,7 @@ export function API_REQUEST_SIGNUP({commit},{name, email, password})
              */
 
             localStorage.authentification_token = response['data'].token
+
 
             setTimeout(() => {  //On effectue une redirection vers la page des todos
                 router.push('/home')
@@ -147,17 +149,32 @@ export function API_REQUEST_GET_USER({commit}, authentification_token)
         .get('http://138.68.74.39/api/user')
         .then((response) => {
 
-            console.log(response)
             commit('SET_USER_DATA',response['data'])
             commit('SET_IS_ACCESS_AUTHORIZED_TRUE')
 
         })
-        .catch((error) => (
+        .catch((error) => {
 
-            commit('SET_IS_ACCESS_AUTHORIZED_FALSE'),
-            console.log(error)
+            commit('SET_IS_ACCESS_AUTHORIZED_FALSE')
 
-        ))
+            if(error.response)
+            {
+
+                if(error.response.status == 429)
+                {
+                    commit('SET_ERROR_MESSAGE','Service indisponible')
+
+                }else{
+                    commit('SET_ERROR_MESSAGE','Erreur interne')
+                }
+
+            }else{
+                commit('SET_ERROR_MESSAGE','Erreur intener')
+            }
+
+
+        })
+
         .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête l'écran de chargement
 
 }
@@ -171,7 +188,6 @@ export function REQUEST_LOGOUT({commit})
     commit('SET_AUTHENTIFICATION_TOKEN','')     //Nous remettons son token par défaut
 }
 
-
 export function REQUEST_SET_INFO_MESSAGE({commit},info_message)
 {
     commit('SET_INFO_MESSAGE',info_message)
@@ -181,4 +197,5 @@ export function REQUEST_SET_DEFAULT_MESSAGE({commit})
 {
     commit('SET_DEFAULT_MESSAGE')
 }
+
 

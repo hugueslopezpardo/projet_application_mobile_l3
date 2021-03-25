@@ -13,7 +13,6 @@ export function GET_CURRENT_LIST(state)
 export function GET_CURRENT_FILTRED_LIST(state)
 {
 
-
     if(state.filter == 'all') {
 
         return state.current_list.todos
@@ -95,4 +94,23 @@ export function GET_INFO_MESSAGE(state)
 {
     return state.info_message
 }
+
+
+
+/**
+ * Permet de savoir le nombre de todo de notre liste
+ */
+export function GET_NB_TODOS(state)
+{
+    return state.current_list.todos.length
+}
+
+/**
+ * Permet de savoir le nombre de todo terminé dans notre liste
+ */
+export function GET_NB_TODOS_FINISH(state)
+{
+    return state.current_list.todos.filter(t => t.completed).length
+}
+
 

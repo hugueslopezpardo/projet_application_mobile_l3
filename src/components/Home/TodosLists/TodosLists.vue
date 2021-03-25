@@ -11,10 +11,20 @@
         </div>
 
         <div class="progress mt-4">
-            <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+          <div v-if="GET_POURCENTAGE_FINISH_BAR <= 25" class="progress-bar progress-bar-striped bg-danger" role="progressbar" v-bind:style="{width: GET_POURCENTAGE_FINISH_BAR + '%'}" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+          <div v-else-if="GET_POURCENTAGE_FINISH_BAR > 25 && GET_POURCENTAGE_FINISH_BAR <= 60" class="progress-bar progress-bar-striped bg-warning" role="progressbar" v-bind:style="{width: GET_POURCENTAGE_FINISH_BAR + '%'}" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+          <div v-else class="progress-bar progress-bar-striped bg-success" role="progressbar" v-bind:style="{width: GET_POURCENTAGE_FINISH_BAR + '%'}" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+
         </div>
 
-        <div class="mb-3 mt-4">
+      <div class="row mt-3">
+
+        <h3>{{GET_NB_TODOS_FINISH}} / {{GET_NB_TODOS}}</h3>
+
+      </div>
+
+        <div class="mb-3 mt-3">
+
             <label for="create-new-list-input" class="form-label">Créer une TODO</label>
             <input v-model="todo_name" type="text" class="form-control" id="create-new-list-input" placeholder="Nom de votre tâche ...">
             <div id="emailHelp" class="form-text">3 caractère minimum / 20 caractère maximum</div>
@@ -24,16 +34,16 @@
             <button v-on:click="CREATE_TODO()" type="submit" class="btn btn-outline-primary">Créer</button>
         </div>
 
+
         <!-------------------------------------------------------------------------------------------------------------->
         <div class="btn-group mt-4 mb-4" role="group" aria-label="Basic example">
             <button v-on:click="REQUEST_SET_ALL_TODOS"        type="button" class="btn btn-outline-primary">Toutes</button>
             <button v-on:click="REQUEST_SET_NOT_FINISH_TODOS" type="button" class="btn btn-outline-primary">A faire</button>
             <button v-on:click="REQUEST_SET_FINISH_TODOS"     type="button" class="btn btn-outline-primary">Faites</button>
         </div>
+      <!-------------------------------------------------------------------------------------------------------------->
 
-        <!-------------------------------------------------------------------------------------------------------------->
-
-        <ul class="list-group">
+      <ul class="list-group">
             <TodosListsItem v-for="(todo, key) in GET_CURRENT_FILTRED_LIST" v-bind:key="key" :todo="todo" :todo_position_in_list="key"/>
         </ul>
 
@@ -52,7 +62,9 @@ export default {
     name: "TodosLists",
     data() {
         return {
-            todo_name : null
+
+            todo_name : null,
+            pourcentage : '0'
         }
     },
     components: {
@@ -80,7 +92,16 @@ export default {
         }
     },
     computed : {
-        ...mapGetters('todos',['GET_CURRENT_FILTRED_LIST','GET_DEFAULT_LIST'])
+
+        ...mapGetters('todos',['GET_CURRENT_FILTRED_LIST','GET_DEFAULT_LIST','GET_CURRENT_LIST','GET_NB_TODOS_FINISH','GET_NB_TODOS']),
+
+        GET_POURCENTAGE_FINISH_BAR()
+        {
+
+          return ( this.GET_NB_TODOS_FINISH / this.GET_NB_TODOS ) * 100
+
+        }
+
     }
 }
 </script>
