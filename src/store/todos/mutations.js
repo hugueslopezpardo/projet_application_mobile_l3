@@ -148,6 +148,7 @@ export function CREATE_TODO_LIST(state, {id, name, user_id, created_at, updated_
  */
 export function SET_NOT_FINISH_TODOS(state)
 {
+
     state.filter = 'todo'
 }
 
@@ -180,6 +181,5 @@ function get_index(liste,todo_id)
 {
     return liste.map(item => item.id).indexOf(todo_id)
 }
-
 
 
