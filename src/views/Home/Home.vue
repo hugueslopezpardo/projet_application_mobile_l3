@@ -8,9 +8,12 @@
             <div class="col mt-5">
                 <TodosLists :current_list="GET_CURRENT_LIST"/>
             </div>
+
         </div>
 
+
     </div>
+
 </template>
 
 <script>
@@ -40,12 +43,9 @@ export default {
     mounted() {
 
         if(localStorage.authentification_token){
-
             this.API_REQUEST_GET_TODO_LISTS(localStorage.authentification_token)
-
         }else{
-
-            this.API_REQUEST_GET_TODO_LISTS(localStorage.authentification_token)
+            this.API_REQUEST_GET_TODO_LISTS(this.GET_AUTHENTIFICATION_TOKEN)
 
         }
     }

@@ -26,11 +26,16 @@
             <button v-on:click="REQUEST_CREATE_TODO" type="submit" class="btn btn-outline-primary">Créer</button>
         </div>
 
+        <!-------------------------------------------------------------------------------------------------------------->
+
         <div class="btn-group mt-4 mb-4" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-primary">Toutes</button>
-            <button type="button" class="btn btn-primary">A faire</button>
-            <button type="button" class="btn btn-primary">Faites</button>
+
+            <button v-on:click="REQUEST_SET_ALL_TODOS" type="button" class="btn btn-outline-primary">Toutes</button>
+            <button v-on:click="REQUEST_SET_FINISH_TODOS"  type="button" class="btn btn-outline-primary">A faire</button>
+            <button v-on:click="REQUEST_SET_NOT_FINISH_TODOS"  type="button" class="btn btn-outline-primary">Faites</button>
         </div>
+
+        <!-------------------------------------------------------------------------------------------------------------->
 
         <ul class="list-group">
             <TodosListsItem v-for="todo in GET_CURRENT_TODOS" v-bind:key="todo" :todo="todo"/>
@@ -83,13 +88,21 @@ export default {
                 authentification_token : localStorage.authentification_token
             })
 
-        }
+        },
 
         /***********************************************************************************/
 
+        ...mapActions('todos',['REQUEST_SET_ALL_TODOS']),
+        ...mapActions('todos',['REQUEST_SET_FINISH_TODOS']),
+        ...mapActions('todos',['REQUEST_SET_NOT_FINISH_TODOS']),
+
+
+
     },
     computed : {
-        ...mapGetters('todos',['GET_CURRENT_TODOS'])
+        ...mapGetters('todos',['GET_CURRENT_TODOS']),
+        ...mapGetters('todos',['GET_TODOS_FILTER'])
+
     }
 }
 </script>

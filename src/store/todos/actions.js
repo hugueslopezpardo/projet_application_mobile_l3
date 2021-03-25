@@ -257,8 +257,21 @@ export function REQUEST_SET_CURRENT_LIST({commit}, list_position_id)
     commit('SET_CURRENT_LIST',list_position_id)
 }
 
-export function REQUEST_SET_CURRENT_LIST({commit}, list_positio_id)
+export function REQUEST_SET_ALL_TODOS({commit})
+{
+    commit('SET_ALL_TODOS')
+}
 
+export function REQUEST_SET_FINISH_TODOS({commit})
+{
+    commit('SET_FINISH_TODOS')
+}
+
+export function REQUEST_SET_NOT_FINISH_TODOS({commit})
+{
+    commit('SET_NOT_FINISH_TODOS')
+
+}
 
 /**================================================================================================
  *                                         LOCAL - GET

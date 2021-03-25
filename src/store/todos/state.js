@@ -5,7 +5,9 @@ export default function()
 
         todos_lists     : [],    //Liste contenant toute les listes de TODO
         current_list    : null,  //La liste sur la quel nous sommes entrain de travailler
-        current_todos    : null,  //La TODO sur la quel nous travaillons
+        current_todos   : null,  //La TODO sur la quel nous travaillons
+        todos_filter          : 'all',
+
 
         success_message : null,  //Le message a afficher en cas de success
         error_message   : null,  //Le message a afficher en cas d'erreur

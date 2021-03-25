@@ -25,5 +25,20 @@ export function GET_CURRENT_LIST(state)
 
 export function GET_CURRENT_TODOS(state)
 {
-    return state.current_todos
+
+    if(state.todos_filter == 'all') {
+        return state.current_list.todos
+    }else if(state.todos_filter == 'todo'){
+        return state.current_list.todos.filter(t => t.completed)
+    }else if(state.todos_filter == 'do'){
+        return state.current_list.todos.filter(t => !t.completed)
+    }else{
+        return state.current_todos.todos
+    }
+
+}
+
+export function GET_TODOS_FILTER(state)
+{
+    return state.todos_filter
 }
