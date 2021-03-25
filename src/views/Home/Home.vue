@@ -14,7 +14,9 @@
                 <TodosLists v-if="GET_CURRENT_LIST != null" :current_list="GET_CURRENT_LIST" />
                 <InfoMessage v-else message="Cliquez sur une liste pour pouvoir y acceder" />
             </div>
+
         </div>
+
 
     </div>
 

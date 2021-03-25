@@ -96,5 +96,3 @@ export function GET_INFO_MESSAGE(state)
     return state.info_message
 }
 
-
-

@@ -36,6 +36,7 @@
         <ul class="list-group">
             <TodosListsItem v-for="(todo, key) in GET_CURRENT_FILTRED_LIST" v-bind:key="key" :todo="todo" :todo_position_in_list="key"/>
         </ul>
+
     </div>
 
 </template>
