@@ -7,12 +7,14 @@
         </h1>
 
         <!-- Quand on clique sur le boutton on effectue une requête à axios pour supprimer la liste, on passe en paramètre l'id de la liste a supprimer -->
+
         <div class="mt-4 mb-4">
             <button v-on:click="API_REQUEST_DELETE_TODO_LIST(current_list.id)" type="submit" class="btn btn-outline-danger">Supprimer la liste</button>
         </div>
 
 
       <!-- LA BAR DE PROGRESSION POUR VOIR l'AVANCEMENT DES TODOS Rouge < 25% | Jaune < 60% | Vert > 60% -->
+
 
         <div class="progress mt-4">
           <div v-if="GET_POURCENTAGE_FINISH_BAR <= 25" class="progress-bar progress-bar-striped bg-danger" role="progressbar" v-bind:style="{width: GET_POURCENTAGE_FINISH_BAR + '%'}" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
@@ -44,6 +46,7 @@
         </div>
 
         <!-- Quand nous cliquons sur le boutton nous apellons la méthodes pour créer une TODO -->
+
         <div class="mt-2 mb-4">
             <button v-on:click="CREATE_TODO()" type="submit" class="btn btn-outline-primary">Créer</button>
         </div>
@@ -70,6 +73,7 @@
       <ul class="list-group">
             <TodosListsItem v-for="(todo, key) in GET_CURRENT_FILTRED_LIST" v-bind:key="key" :todo="todo" :todo_position_in_list="key"/>
         </ul>
+
     </div>
 
 </template>
@@ -121,12 +125,14 @@ export default {
                  * name : le nom de la todo à créer
                  * todolist_id : l'id de la liste ou la todo sera créer
                  */
+
                 this.API_REQUEST_CREATE_TODO({name : this.todo_name, todolist_id : this.current_list.id})
                 this.todo_name = ''
 
             }
         }
     },
+
     computed : { //On importe les getters pour récupérer les variables dans le state de TODOS
         ...mapGetters('todos',['GET_CURRENT_FILTRED_LIST','GET_DEFAULT_LIST','GET_CURRENT_LIST','GET_NB_TODOS_FINISH','GET_NB_TODOS']),
 
@@ -135,13 +141,13 @@ export default {
          * //Va permettre de convertir une fraction en pourcentage pour faire fonctionner notre bar de progression
          * @returns {number}
          */
+
         GET_POURCENTAGE_FINISH_BAR()
         {
 
           return ( this.GET_NB_TODOS_FINISH / this.GET_NB_TODOS ) * 100
 
         }
-
 
     }
 }

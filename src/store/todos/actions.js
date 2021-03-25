@@ -204,6 +204,7 @@ export function API_REQUEST_DELETE_TODO_LIST({commit}, todo_list_id)
 
         .then((response) => {
 
+
             commit('SET_SUCCESS_MESSAGE','Liste parfaitement supprimer'),
             commit('DELETE_TODO_LIST',todo_list_id)
             console.log(response)
@@ -262,6 +263,7 @@ export function API_REQUEST_CREATE_TODO_LIST({commit}, name)
                 console.log(error)
 
         ))
+
 
 }
 
@@ -326,3 +328,4 @@ export function REQUEST_SET_ERROR_MESSAGE({commit},error_message)
 {
     commit('SET_ERROR_MESSAGE',error_message)
 }
+

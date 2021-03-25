@@ -2,17 +2,12 @@ import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'; // <-- aliased path
 
 
-/*
-
-    LOCAL STORAGE : TOKEN
-
- */
-
 const routes = [
     {
         path: '/',
         name: 'Welcome',
         component: () => import('../views/Welcome/Welcome.vue'),
+
 
         beforeEnter(to, from, next) {
 
@@ -38,6 +33,7 @@ const routes = [
             {
                 next();
             }else{
+
                 if(store.getters['accounts/GET_IS_ACCESS_AUTHORIZED']) {
                     next()
                 }else{
