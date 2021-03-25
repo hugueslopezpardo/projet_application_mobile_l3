@@ -6,12 +6,12 @@
           <button v-on:click="REQUEST_LOGOUT" type="button" class="btn btn-outline-danger">Deconnexion</button>
       </div>
     </div>
+
   </div>
 </template>
 
 <script>
 import {mapActions} from "vuex";
-
 
 export default {
   name: "TopRow",
@@ -20,7 +20,6 @@ export default {
   },
   methods : {
       ...mapActions('accounts',['REQUEST_LOGOUT'])
-
   }
 }
 </script>

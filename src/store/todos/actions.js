@@ -6,7 +6,6 @@ const axios = require('axios');
  * @param authentification_token
  */
 export function API_REQUEST_GET_TODOS_LISTS({commit,dispatch})
-
 {
 
     commit('SET_IS_DATA_LOADING_TRUE')
@@ -24,13 +23,8 @@ export function API_REQUEST_GET_TODOS_LISTS({commit,dispatch})
         .get('http://138.68.74.39/api/todolists') //On recupère la liste contient les différentes liste de TODO
         .then(response => {                           //Si le serveir renvoie une réponse positif
 
-            commit('SET_DEFAULT_LIST', response['data']), //On modifie le state pour y placer la liste que nous avons récupérer en réponse
+            commit('SET_DEFAULT_LIST', response['data']) //On modifie le state pour y placer la liste que nous avons récupérer en réponse
 
-            /**
-             * On stocke notre todolists dans le localstorage
-             */
-
-            localStorage.default_list = response['data']
 
         })
         .catch(error => { //Si il y'a une erreur
@@ -243,20 +237,17 @@ export function API_REQUEST_DELETE_TODO_LIST({commit, dispatch}, todo_list_id)
         .then((response) => {
 
             dispatch('REQUEST_SET_SUCCESS_MESSAGE','Liste parfaitement supprimer'),
-
             commit('DELETE_TODO_LIST',todo_list_id)
             console.log(response)
 
         })
         .catch((error) => {
 
-
             dispatch('REQUEST_SET_ERROR_MESSAGE','Erreur lors de la supréssion de la liste'),
             console.log(error)
 
         })
         .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête le chargement
-
 
 
 }
@@ -285,7 +276,6 @@ export function API_REQUEST_CREATE_TODO_LIST({commit, dispatch}, name)
             dispatch('REQUEST_SET_SUCCESS_MESSAGE','Liste parfaitement créer'),
             commit('CREATE_TODO_LIST', {
 
-
                 id          : response['data'].id,
                 name        : response['data'].name,
                 user_id     : response['data'].user_id,
@@ -307,7 +297,6 @@ export function API_REQUEST_CREATE_TODO_LIST({commit, dispatch}, name)
         .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête le chargement
 
 }
-
 
 /**
  * Permet choisir la liste en cours
@@ -371,7 +360,6 @@ export function REQUEST_SET_SUCCESS_MESSAGE({commit},success)
 }
 
 /**
-
  * Permet de modifier le message d'erreur
  * @param commit
  * @param error_message
@@ -388,4 +376,3 @@ export function REQUEST_SET_DEFAULT_MESSAGE({dispatch})
     dispatch('REQUEST_SET_INFO_MESSAGE','')
     dispatch('REQUEST_SET_ERROR_MESSAGE','')
 }
-

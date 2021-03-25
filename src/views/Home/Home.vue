@@ -11,7 +11,6 @@
           <ErrorMessage   v-if="GET_ERROR_MESSAGE   != '' " :message="GET_ERROR_MESSAGE" />
         </div>
 
-
         <div class="row">
             <div class="col-3 mt-5">
                 <SideBar :default_list="GET_DEFAULT_LIST"/>
@@ -25,16 +24,16 @@
 
             <div v-else>
                 <Loading/>
-
             </div>
+
         </div>
+
 
     </div>
 
 </template>
 
 <script>
-
 
 
 import {mapActions, mapGetters} from "vuex";
@@ -53,16 +52,19 @@ export default {
         ...mapActions('todos',['API_REQUEST_GET_TODOS_LISTS']),
         ...mapActions('todos',['REQUEST_SET_SUCCESS_MESSAGE','REQUEST_SET_INFO_MESSAGE','REQUEST_SET_ERROR_MESSAGE']),
 
+
     },
     computed : {
         ...mapGetters('accounts',['GET_USER_DATA','GET_IS_ACCESS_AUTHORIZED']),
         ...mapGetters('todos',['GET_DEFAULT_LIST','GET_CURRENT_LIST']),
         ...mapGetters('todos',['GET_SUCCESS_MESSAGE','GET_ERROR_MESSAGE','GET_INFO_MESSAGE','GET_IS_DATA_LOADING']),
 
+
+
     },
     mounted() {
-        this.API_REQUEST_GET_USER()
         this.API_REQUEST_GET_TODOS_LISTS()
+        this.API_REQUEST_GET_USER()
     },
     watch : {
 
@@ -81,7 +83,6 @@ export default {
         this.REQUEST_SET_ERROR_MESSAGE('')
         this.REQUEST_SET_SUCCESS_MESSAGE('')
       }
-
 
     }
 }

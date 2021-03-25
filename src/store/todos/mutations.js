@@ -43,7 +43,6 @@ export function SET_DEFAULT_ERROR_MESSAGE(state)
 export function SET_DEFAULT_INFO_MESSAGE(state)
 {
     SET_INFO_MESSAGE(state,'')
-
 }
 
 /**
@@ -53,11 +52,7 @@ export function SET_DEFAULT_INFO_MESSAGE(state)
  */
 export function SET_SUCCESS_MESSAGE(state, success_message)
 {
-
     state.success_message = success_message
-    SET_DEFAULT_ERROR_MESSAGE()
-    SET_DEFAULT_INFO_MESSAGE()
-
 }
 
 /**
@@ -68,8 +63,6 @@ export function SET_SUCCESS_MESSAGE(state, success_message)
 export function SET_ERROR_MESSAGE(state, error_message)
 {
     state.error_message = error_message
-    SET_DEFAULT_INFO_MESSAGE()
-    SET_DEFAULT_SUCCESS_MESSAGE()
 }
 
 /**
@@ -138,7 +131,6 @@ export function REMOVE_TODO_IN_LIST(state, todo_id)
 {
     let i = get_index(state.current_list.todos, todo_id) //On trouve la position de la todo dans la liste
     state.current_list.todos.splice(i, 1)                //On supprime la todo de la liste
-
 }
 
 /**
@@ -162,6 +154,7 @@ export function UPDATE_TODO_NAME_IN_LIST(state, {todo_id, new_name})
 {
     let i = get_index(state.current_list.todos, todo_id)
     state.current_list.todos[i].name = new_name
+
 }
 
 /**
@@ -246,17 +239,7 @@ export function SET_ALL_TODOS(state)
 function get_index(liste,todo_id)
 {
     return liste.map(item => item.id).indexOf(todo_id)
-
 }
 
-
-/**
- * Permet de récupérer la position de la todo dans une liste
- * @param todo_id
- */
-function get_index(liste,todo_id)
-{
-    return liste.map(item => item.id).indexOf(todo_id)
-}
 
 
