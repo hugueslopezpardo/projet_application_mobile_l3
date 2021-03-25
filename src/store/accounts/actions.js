@@ -25,6 +25,7 @@ export function API_REQUEST_LOGIN({commit,dispatch},{email, password})
             dispatch('REQUEST_SET_SUCCESS_MESSAGE', 'Connexion effectué, redirection en cours ...'),      //Nous modifions le state pour que le state reçoit le message de succees pour l'afficher
             commit('SET_IS_ACCESS_AUTHORIZED_TRUE')                                                       //Nous changons ce stauts pour dire que l'utilisateur est connecté
 
+
             /**
              *  Nous allons enregistrer nos données en local pour éviter de devoir refaire des appelle à l'API
              *  pour re récupérer le token d'authentification
@@ -33,6 +34,7 @@ export function API_REQUEST_LOGIN({commit,dispatch},{email, password})
             localStorage.authentification_token = response['data'].token                                  //Nous stockons le token dans le localstorage
 
             setTimeout(() => {                                                                     //Nous redirigions après une seconde vers la page de gestion des todos
+
                 router.push('/home')
             }, 1000)
 
@@ -44,6 +46,7 @@ export function API_REQUEST_LOGIN({commit,dispatch},{email, password})
 
             if(error.response) {                                                                           //Si le serveur nous renvoie une réponse d'erreur
 
+
                 /**
                  * Nous mettons un IF car si dans le futur il y'a plusieurs code d'erreur à gérer
                  * il sera alors plus facile d'adapter pour gérer les différents code
@@ -51,6 +54,7 @@ export function API_REQUEST_LOGIN({commit,dispatch},{email, password})
 
                 if(error.response.status == 401){   //401 = Impossible de se connecter
                     dispatch('REQUEST_SET_ERROR_MESSAGE','Connexion impossible')
+
                 }else{
                     dispatch('REQUEST_SET_ERROR_MESSAGE','Connexion impossible')
                 }
@@ -61,6 +65,7 @@ export function API_REQUEST_LOGIN({commit,dispatch},{email, password})
 
         })
         .finally(() => commit('SET_IS_DATA_LOADING_FALSE'))                                         //On arrête l'écran de chargement
+
 
 }
 
@@ -95,8 +100,8 @@ export function API_REQUEST_SIGNUP({commit,dispatch},{name, email, password})
              */
 
             localStorage.authentification_token = response['data'].token                        //On stock le token de l'utilisateur dans le local storage
-
             setTimeout(() => {                                                           //On effectue une redirection vers la page de gestion des todos
+
                 router.push('/home')
             }, 1000)
 
@@ -106,6 +111,7 @@ export function API_REQUEST_SIGNUP({commit,dispatch},{name, email, password})
             commit('SET_IS_ACCESS_AUTHORIZED_FALSE')                                             //Nous n'autorisons pas la connexion
 
             if(error.response) {                                                                 //Si le serveur renvoie une erreur comme réponse
+
 
                 /**
                  * Nous mettons un IF car si dans le futur il y'a plusieurs code d'erreur à gérer
@@ -121,6 +127,7 @@ export function API_REQUEST_SIGNUP({commit,dispatch},{name, email, password})
             }else{
                 dispatch('REQUEST_SET_ERROR_MESSAGE','Service indisponible pour le moment ')              //Si le serveur ne renvoie rien du tous affiche ce message d'erreur
 
+
             }
 
         })
@@ -134,6 +141,7 @@ export function API_REQUEST_SIGNUP({commit,dispatch},{name, email, password})
  * @axios : GET
  */
 export function API_REQUEST_GET_USER({commit, dispatch})
+
 {
 
     commit('SET_IS_DATA_LOADING_TRUE');                               //On lance l'écran de chargement
@@ -142,6 +150,7 @@ export function API_REQUEST_GET_USER({commit, dispatch})
     /**
      * Pour pouvoir effectuer l'action nous devons donner à Axios le token pour pouvoir l'autorisé
      */
+
 
     axios.create({
         headers: {
@@ -170,15 +179,22 @@ export function API_REQUEST_GET_USER({commit, dispatch})
                     dispatch('REQUEST_SET_ERROR_MESSAGE','Erreur interne')         //Demande pour mettre un message d'erreur
                 }
 
+
             }else{
                 dispatch('REQUEST_SET_ERROR_MESSAGE','Erreur interne')             //Demande pour mettre un message d'erreur
             }
+
+        })
+        .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête l'écran de chargement
+
+}
 
 
         })
         .finally(() => commit('SET_IS_DATA_LOADING_FALSE')) //On arrête l'écran de chargement
 
 }
+
 
 
 /**
@@ -190,6 +206,7 @@ export function REQUEST_LOGOUT({commit})
     localStorage.clear()
     router.push('/')
 }
+
 
 /**
  * On fait une requête pour modifier le message d'informations
@@ -204,14 +221,15 @@ export function REQUEST_SET_INFO_MESSAGE({commit},info_message)
  * On fait une requête pour remettre tous les message par défaut
  */
 export function REQUEST_SET_ERROR_MESSAGE({commit}, error_message)
+
 {
     commit('SET_ERROR_MESSAGE',error_message)
 }
-
 export function REQUEST_SET_SUCCESS_MESSAGE({commit}, success_message)
 {
     commit('SET_SUCCESS_MESSAGE',success_message)
 }
+
 
 
 

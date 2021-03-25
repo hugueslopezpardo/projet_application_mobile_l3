@@ -7,6 +7,7 @@
         </h1>
 
         <!-- Quand on clique sur le boutton on effectue une requête à axios pour supprimer la liste, on passe en paramètre l'id de la liste a supprimer -->
+
         <div class="mt-4 mb-4">
             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 Supprimer la liste
@@ -38,6 +39,7 @@
 
       <!-- LA BAR DE PROGRESSION POUR VOIR l'AVANCEMENT DES TODOS Rouge < 25% | Jaune < 60% | Vert > 60% -->
 
+
         <div class="progress mt-4">
           <div v-if="GET_POURCENTAGE_FINISH_BAR <= 25" class="progress-bar progress-bar-striped bg-danger" role="progressbar" v-bind:style="{width: GET_POURCENTAGE_FINISH_BAR + '%'}" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
           <div v-else-if="GET_POURCENTAGE_FINISH_BAR > 25 && GET_POURCENTAGE_FINISH_BAR <= 60" class="progress-bar progress-bar-striped bg-warning" role="progressbar" v-bind:style="{width: GET_POURCENTAGE_FINISH_BAR + '%'}" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
@@ -54,6 +56,7 @@
         </div>
 
 
+
         <!--
             Le formulaire pour créer une todo :
 
@@ -68,6 +71,7 @@
         </div>
 
         <!-- Quand nous cliquons sur le boutton nous apellons la méthodes pour créer une TODO -->
+
         <div class="mt-2 mb-4">
             <button v-on:click="CREATE_TODO()" type="submit" class="btn btn-outline-primary">Créer</button>
         </div>
@@ -96,6 +100,7 @@
             <TodosListsItem v-for="(todo, key) in GET_CURRENT_FILTRED_LIST" v-bind:key="key" :todo="todo" :todo_position_in_list="key"/>
       </ul>
         <p v-else>Aucune todo ne correspond à ce filtre</p>
+
     </div>
 
 </template>
@@ -124,6 +129,7 @@ export default {
         ...mapActions('todos',['API_REQUEST_CREATE_TODO','REQUEST_SET_ALL_TODOS','REQUEST_SET_FINISH_TODOS','REQUEST_SET_NOT_FINISH_TODOS','API_REQUEST_DELETE_TODO_LIST']),
         ...mapActions('todos',['REQUEST_SET_SUCCESS_MESSAGE','REQUEST_SET_ERROR_MESSAGE','REQUEST_SET_INFO_MESSAGE','REQUEST_SET_DEFAULT_MESSAGE']),
 
+
         /**
          * Va être appeler l'orsque l'utilisateur créer une todo, et va faire un apelle à l'api pour créer la todo
          */
@@ -141,18 +147,21 @@ export default {
                     return  //Nous sortons de notre méthode
                 }
 
+
                 //Si tous est bon nous demandons à L'API DE créer notre TODO
 
                 /**
                  * name : le nom de la todo à créer
                  * todolist_id : l'id de la liste ou la todo sera créer
                  */
+
                 this.API_REQUEST_CREATE_TODO({name : this.todo_name, todolist_id : this.current_list.id})
                 this.todo_name = ''
 
             }
         }
     },
+
     computed : { //On importe les getters pour récupérer les variables dans le state de TODOS
         ...mapGetters('todos',['GET_CURRENT_FILTRED_LIST','GET_DEFAULT_LIST','GET_CURRENT_LIST','GET_NB_TODOS_FINISH','GET_NB_TODOS']),
 
@@ -161,6 +170,7 @@ export default {
          * //Va permettre de convertir une fraction en pourcentage pour faire fonctionner notre bar de progression
          * @returns {number}
          */
+
         GET_POURCENTAGE_FINISH_BAR()
         {
 
